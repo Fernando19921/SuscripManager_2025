@@ -1,0 +1,15 @@
+.main-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+.main-content {
+  margin-left: 220px; /* igual al ancho del sidebar */
+  padding: 20px;
+}
+

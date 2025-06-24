@@ -1,0 +1,52 @@
+[
+  {
+    "nombre": "Juan Pérez",
+    "correo": "juan.perez@mail.com",
+    "colonia": "León / Centro",
+    "paqueteActivo": "Paquete A",
+    "servicios": ["Internet", "Telefonía"],
+    "promociones": ["Promo Centro 10% (Vigente)"],
+    "precioBase": 500.00,
+    "precioConPromocion": 450.00
+  },
+  {
+    "nombre": "María Gómez",
+    "correo": "maria.gomez@mail.com",
+    "colonia": "León / Las Torres",
+    "paqueteActivo": "Paquete B",
+    "servicios": ["Internet"],
+    "promociones": ["Promo Bienvenida 5% (Vigente)"],
+    "precioBase": 400.00,
+    "precioConPromocion": 380.00
+  },
+  {
+    "nombre": "Carlos Ramírez",
+    "correo": "carlos.ramirez@mail.com",
+    "colonia": "León / San Juan",
+    "paqueteActivo": "Paquete C",
+    "servicios": ["Telefonía", "TV"],
+    "promociones": [],
+    "precioBase": 520.00,
+    "precioConPromocion": 520.00
+  },
+  {
+    "nombre": "Ana Martínez",
+    "correo": "ana.martinez@mail.com",
+    "colonia": "León / El Rosario",
+    "paqueteActivo": "Paquete A",
+    "servicios": ["Internet", "TV"],
+    "promociones": ["Promo Combo 15% (Vigente)"],
+    "precioBase": 553.00,
+    "precioConPromocion": 470.00
+  },
+  {
+    "nombre": "Luis Hernández",
+    "correo": "luis.hernandez@mail.com",
+    "colonia": "León / Jardines",
+    "paqueteActivo": "Paquete B",
+    "servicios": ["Internet", "Telefonía", "TV"],
+    "promociones": ["Promo Total 20% (Vigente)"],
+    "precioBase": 750.00,
+    "precioConPromocion": 600.00
+  }
+]

@@ -1,0 +1,32 @@
+.sidebar-container {
+  width: 220px;
+  height: 100vh;
+  background-color: #f8f9fa;
+  padding: 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-y: auto;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.list-group {
+  width: 100%;
+}
+
+.list-group-item {
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.list-group-item:hover {
+  background-color: #e9ecef;
+}
+
+.active {
+  background-color: #007bff !important;
+  color: white !important;
+}
