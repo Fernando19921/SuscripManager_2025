@@ -1,1 +1,64 @@
-<p>deuda-suscriptor works!</p>
+<div class="card">
+  <h3>Calculadora de Deuda por Suscriptor</h3>
+
+  <!-- Dropdown -->
+  <label for="pkgSelect">Selecciona Paquete:</label>
+  <select
+    [(ngModel)]="selectedPackageId"
+    (ngModelChange)="onSelectPackage()"
+  >
+    <option [ngValue]="null" disabled>-- Selecciona Paquete --</option>
+    <option *ngFor="let pkg of packages" [ngValue]="pkg.id">
+      {{ pkg.name }}
+    </option>
+  </select>
+
+  <!-- Info del paquete -->
+  <div *ngIf="selectedPackage">
+    <p><strong>Descripción:</strong> {{ selectedPackage.description }}</p>
+    <p><strong>Precio base:</strong> {{ selectedPackage.price | currency }}</p>
+    <ul>
+      <li *ngFor="let s of selectedPackage.services">{{ s }}</li>
+    </ul>
+  </div>
+
+  <!-- Promociones disponibles -->
+  <div class="promotions" *ngIf="selectedPackage">
+    <h4>Promociones disponibles</h4>
+
+    <div *ngIf="loadingPromos">Cargando promociones...</div>
+    <div *ngIf="errorPromos">{{ errorPromos }}</div>
+    <div *ngIf="!loadingPromos && promotions.length === 0">
+      No hay promociones disponibles.
+    </div>
+
+    <div *ngFor="let promo of promotions">
+      <label>
+        <input
+          type="checkbox"
+          [checked]="selectedPromotions.includes(promo.id)"
+          [disabled]="promo.autoApplied"
+          (change)="onTogglePromotion(promo)"
+        />
+        {{ promo.description }} —
+        <span *ngIf="promo.discountType === 'percentage'">
+          {{ promo.value }}%
+        </span>
+        <span *ngIf="promo.discountType === 'fixed'">
+          ${{ promo.value }}
+        </span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Total a pagar -->
+  <div *ngIf="selectedPackage">
+    <h4>Total a pagar</h4>
+    <p class="total">$ {{ total }}</p>
+  </div>
+
+  <!-- Botón Exportar -->
+  <div *ngIf="selectedPackage">
+    <button (click)="exportToPDF()">Exportar resultado</button>
+  </div>
+</div>
