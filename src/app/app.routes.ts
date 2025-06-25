@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
-import { DetalleSuscriptorComponent } from './suscriptor/pages/detalle-suscriptor/detalle-suscriptor.component';
-import { DeudaSuscriptorComponent } from './suscriptor/pages/deuda-suscriptor/deuda-suscriptor.component';
+import { DetalleSuscriptorComponent } from './pages/detalle-suscriptor/detalle-suscriptor.component';
+import { DeudaSuscriptorComponent } from './pages/deuda-suscriptor/deuda-suscriptor.component';
 
 export const routes: Routes = [
   {
