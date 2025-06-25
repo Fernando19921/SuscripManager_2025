@@ -1,0 +1,13 @@
+<footer class="footer">
+  <div class="container">
+    <p class="mb-1">&copy; 2025 Megacable. Todos los derechos reservados.</p>
+    <p class="mb-0">
+      <ng-container *ngIf="footerLinks$ | async as links">
+        <ng-container *ngFor="let link of links; let last = last">
+          <a [href]="link.url" class="footer-link">{{ link.text }}</a
+          ><span *ngIf="!last"> | </span>
+        </ng-container>
+      </ng-container>
+    </p>
+  </div>
+</footer>
