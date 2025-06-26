@@ -1,5 +1,6 @@
 [
   {
+    "id":1,
     "nombre": "Juan Pérez",
     "correo": "juan.perez@mail.com",
     "colonia": "León / Centro",
@@ -10,6 +11,7 @@
     "precioConPromocion": 450.00
   },
   {
+    "id":2,
     "nombre": "María Gómez",
     "correo": "maria.gomez@mail.com",
     "colonia": "León / Las Torres",
@@ -20,6 +22,7 @@
     "precioConPromocion": 380.00
   },
   {
+    "id":3,
     "nombre": "Carlos Ramírez",
     "correo": "carlos.ramirez@mail.com",
     "colonia": "León / San Juan",
@@ -30,6 +33,7 @@
     "precioConPromocion": 520.00
   },
   {
+    "id":4,
     "nombre": "Ana Martínez",
     "correo": "ana.martinez@mail.com",
     "colonia": "León / El Rosario",
@@ -40,6 +44,7 @@
     "precioConPromocion": 470.00
   },
   {
+    "id":5,
     "nombre": "Luis Hernández",
     "correo": "luis.hernandez@mail.com",
     "colonia": "León / Jardines",

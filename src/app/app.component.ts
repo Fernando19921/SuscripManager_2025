@@ -3,6 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { SideBarComponent } from './core/side-bar/side-bar.component';
 import { FooterComponent } from './core/footer/footer.component';
 
+
 @Component({
   selector: 'app-root',
   standalone: true,

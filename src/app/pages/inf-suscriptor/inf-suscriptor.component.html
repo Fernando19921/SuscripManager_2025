@@ -1,0 +1,49 @@
+<div *ngIf="suscriptorSeleccionado" class="container mt-4 d-flex justify-content-center">
+  <div class="card shadow p-4 rounded-4" style="max-width: 550px; width: 100%;">
+
+
+    <div class="text-center mb-4">
+      <i class="fas fa-user-circle fa-5x text-primary"></i>
+      <h4 class="fw-bold mb-0">{{ suscriptorSeleccionado.nombre }}</h4>
+    </div>
+
+
+    <div class="mb-3">
+      <p><strong>📧 Correo:</strong> {{ suscriptorSeleccionado.correo }}</p>
+      <p><strong>📍 Colonia:</strong> {{ suscriptorSeleccionado.colonia }}</p>
+      <p><strong>🎁 Paquete:</strong> {{ suscriptorSeleccionado.paqueteActivo }}</p>
+    </div>
+
+    <hr>
+
+
+    <div class="mb-3">
+      <p><strong>🔧 Servicios incluidos:</strong></p>
+      <ul>
+        <li *ngFor="let s of suscriptorSeleccionado.servicios">{{ s }}</li>
+      </ul>
+    </div>
+
+
+    <div class="mb-3">
+      <p><strong>🏷️ Promoción aplicada:</strong> {{ suscriptorSeleccionado.promociones }}</p>
+    </div>
+
+
+    <div class="mb-3">
+      <p><strong>💰 Precio base:</strong> ${{ suscriptorSeleccionado.precioBase }}</p>
+      <p><strong>💸 Precio con promoción:</strong> ${{ suscriptorSeleccionado.precioConPromocion }}</p>
+    </div>
+
+
+    <div class="d-flex justify-content-end gap-2 mt-4">
+      <a routerLink="/detalle-suscriptor" class="btn btn-outline-primary btn-sm">
+        <i class="fas fa-arrow-left me-1"></i> Volver
+      </a>
+
+      <button (click)="exportarPDF()" class="btn btn-success btn-sm">
+        <i class="fas fa-file-export me-1"></i> Exportar
+      </button>
+    </div>
+  </div>
+</div>
