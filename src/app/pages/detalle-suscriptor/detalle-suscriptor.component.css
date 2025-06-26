@@ -1,25 +1,37 @@
-.subscriber-card {
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  padding: 25px;
-  background-color: #fff;
-  max-width: 500px;
-  margin: 30px auto;
-  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+.table-container {
+  width: 100%;
+  padding: 1rem;
+  overflow-x: auto; /* Habilita scroll horizontal si es necesario */
+  box-sizing: border-box;
 }
 
-.card-title {
-  text-align: center;
-  margin-bottom: 20px;
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px; /* Previene que las columnas se aplasten en pantallas pequeñas */
+}
+
+.table th,
+.table td {
+  padding: 0.75rem;
+  text-align: left;
+  border: 1px solid #ddd;
+  white-space: nowrap; /* Evita que el contenido se rompa en varias líneas */
+}
+
+.table th {
+  background-color: #f8f8f8;
   font-weight: bold;
 }
 
-.section {
-  border-top: 1px solid #ddd;
-  padding-top: 15px;
-  margin-top: 15px;
+@media (max-width: 600px) {
+  .table {
+    min-width: 100%;
+  }
+
+  .table-container {
+    padding: 0.5rem;
+  }
 }
 
-.icon {
-  margin-right: 8px;
-}
+

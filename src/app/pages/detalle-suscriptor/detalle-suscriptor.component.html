@@ -1,3 +1,31 @@
 <div class="table-container">
   <h4 class="mb-3">Lista de Suscriptores</h4>
+
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Nombre</th>
+        <th>Correo</th>
+        <th>Paquete Activo</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of usuarios let i=index">
+        <td>{{i+1}}</td>
+        <td>{{ user.nombre }}</td>
+        <td>{{ user.correo }}</td>
+        <td>{{ user.paqueteActivo }}</td>
+        <td>
+            <a
+              class="btn btn-primary info-btn"
+              [routerLink]="['/detalle',user.id]"
+            >
+              Info
+            </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
