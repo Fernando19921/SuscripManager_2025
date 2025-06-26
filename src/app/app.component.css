@@ -13,3 +13,11 @@
   padding: 20px;
 }
 
+.main-container {
+  display: flex;
+  flex-direction: column;
+}
+
+app-footer {
+  margin-top: auto;
+}
