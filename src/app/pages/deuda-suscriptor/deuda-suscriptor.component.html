@@ -1,64 +1,65 @@
-<div class="card">
-  <h3>Calculadora de Deuda por Suscriptor</h3>
+<mat-card class="max-w-lg mx-auto">
+  <mat-card-header>
+    <mat-card-title>Calculadora de Deuda</mat-card-title>
+  </mat-card-header>
 
-  <!-- Dropdown -->
-  <label for="pkgSelect">Selecciona Paquete:</label>
-  <select
-    [(ngModel)]="selectedPackageId"
-    (ngModelChange)="onSelectPackage()"
-  >
-    <option [ngValue]="null" disabled>-- Selecciona Paquete --</option>
-    <option *ngFor="let pkg of packages" [ngValue]="pkg.id">
-      {{ pkg.name }}
-    </option>
-  </select>
+  <mat-card-content>
+    <!-- 1. Suscriptor -->
+    <mat-form-field appearance="fill" class="w-full mb-4">
+      <mat-label>Selecciona Suscriptor</mat-label>
+      <mat-select [(ngModel)]="selectedSubscriberId" (selectionChange)="onSelectSubscriber()" panelClass="wide-select-panel">
+        <mat-option [value]="null" disabled> Selecciona </mat-option>
+        <mat-option *ngFor="let sub of subscribers" [value]="sub.id">{{ sub.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
 
-  <!-- Info del paquete -->
-  <div *ngIf="selectedPackage">
-    <p><strong>Descripción:</strong> {{ selectedPackage.description }}</p>
-    <p><strong>Precio base:</strong> {{ selectedPackage.price | currency }}</p>
-    <ul>
-      <li *ngFor="let s of selectedPackage.services">{{ s }}</li>
-    </ul>
-  </div>
+    <!-- 2. Paquete -->
+    <mat-form-field appearance="fill" class="w-full mb-4" *ngIf="selectedSubscriberId">
+      <mat-label>Selecciona Paquete</mat-label>
+      <mat-select [(ngModel)]="selectedPackageId" (selectionChange)="onSelectPackage()" panelClass="wide-select-panel">
+        <mat-option [value]="null" disabled> Selecciona </mat-option>
+        <mat-option *ngFor="let pkg of packages" [value]="pkg.id">{{ pkg.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
 
-  <!-- Promociones disponibles -->
-  <div class="promotions" *ngIf="selectedPackage">
-    <h4>Promociones disponibles</h4>
-
-    <div *ngIf="loadingPromos">Cargando promociones...</div>
-    <div *ngIf="errorPromos">{{ errorPromos }}</div>
-    <div *ngIf="!loadingPromos && promotions.length === 0">
-      No hay promociones disponibles.
+    <!-- 3. Detalles -->
+    <div *ngIf="selectedPackage" class="mb-4">
+      <h3>Detalles del Paquete</h3>
+      <p><strong>Descripción:</strong> {{ selectedPackage.description }}</p>
+      <p><strong>Precio:</strong> {{ selectedPackage.price | currency:'MXN':'symbol':'1.0-0' }}</p>
+      <ul>
+        <li *ngFor="let svc of selectedPackage.services">{{ svc }}</li>
+      </ul>
     </div>
 
-    <div *ngFor="let promo of promotions">
-      <label>
-        <input
-          type="checkbox"
-          [checked]="selectedPromotions.includes(promo.id)"
-          [disabled]="promo.autoApplied"
-          (change)="onTogglePromotion(promo)"
-        />
-        {{ promo.description }} —
-        <span *ngIf="promo.discountType === 'percentage'">
-          {{ promo.value }}%
-        </span>
-        <span *ngIf="promo.discountType === 'fixed'">
-          ${{ promo.value }}
-        </span>
-      </label>
+    <!-- 4. Promos -->
+    <div *ngIf="selectedPackage">
+      <h3>Promociones</h3>
+      <div *ngIf="loadingPromos" class="flex justify-center py-4">
+        <mat-progress-spinner diameter="40" mode="indeterminate"></mat-progress-spinner>
+      </div>
+      <mat-checkbox
+        *ngFor="let promo of promotions"
+        [checked]="selectedPromotions.includes(promo.id)"
+        [disabled]="promo.autoApplied"
+        (change)="onTogglePromotion(promo)"
+      >
+        {{ promo.description }}
+        <small>({{ promo.discountType === 'percentage' ? promo.value + '%' : ('$' + promo.value) }})</small>
+      </mat-checkbox>
+      <p *ngIf="!loadingPromos && !promotions.length" class="italic">No hay promociones.</p>
     </div>
-  </div>
 
-  <!-- Total a pagar -->
-  <div *ngIf="selectedPackage">
-    <h4>Total a pagar</h4>
-    <p class="total">$ {{ total }}</p>
-  </div>
+    <!-- 5. Total -->
+    <div *ngIf="selectedPackage" class="text-center my-6">
+      <h3>Total a pagar</h3>
+      <p class="text-3xl font-bold text-primary">{{ total | currency:'MXN':'symbol':'1.0-0' }}</p>
+    </div>
+  </mat-card-content>
 
-  <!-- Botón Exportar -->
-  <div *ngIf="selectedPackage">
-    <button (click)="exportToPDF()">Exportar resultado</button>
-  </div>
-</div>
+  <mat-card-actions class="justify-between">
+    <button mat-stroked-button (click)="calculateTotal()">Calcular</button>
+    <button mat-flat-button color="primary" (click)="exportToPDF()">Exportar PDF</button>
+  </mat-card-actions>
+</mat-card>
+
