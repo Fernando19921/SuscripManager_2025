@@ -1,28 +1,32 @@
 [
   {
-    "id":1,
+    "id": 1,
     "nombre": "Juan Pérez",
     "correo": "juan.perez@mail.com",
     "colonia": "León / Centro",
     "paqueteActivo": "Paquete A",
     "servicios": ["Internet", "Telefonía"],
-    "promociones": ["Promo Centro 10% (Vigente)"],
+    "promociones": ["Promo Centro 10%"],
+    "fechaInicioPromocion": "2025-06-01",
+    "fechaFinPromocion": "2025-06-30",
     "precioBase": 500.00,
     "precioConPromocion": 450.00
   },
   {
-    "id":2,
+    "id": 2,
     "nombre": "María Gómez",
     "correo": "maria.gomez@mail.com",
     "colonia": "León / Las Torres",
     "paqueteActivo": "Paquete B",
     "servicios": ["Internet"],
-    "promociones": ["Promo Bienvenida 5% (Vigente)"],
+    "promociones": ["Promo Bienvenida 5%"],
+    "fechaInicioPromocion": "2025-06-01",
+    "fechaFinPromocion": "2025-07-15",
     "precioBase": 400.00,
     "precioConPromocion": 380.00
   },
   {
-    "id":3,
+    "id": 3,
     "nombre": "Carlos Ramírez",
     "correo": "carlos.ramirez@mail.com",
     "colonia": "León / San Juan",
@@ -33,25 +37,55 @@
     "precioConPromocion": 520.00
   },
   {
-    "id":4,
+    "id": 4,
     "nombre": "Ana Martínez",
     "correo": "ana.martinez@mail.com",
     "colonia": "León / El Rosario",
     "paqueteActivo": "Paquete A",
     "servicios": ["Internet", "TV"],
-    "promociones": ["Promo Combo 15% (Vigente)"],
+    "promociones": ["Promo Combo 15%"],
+    "fechaInicioPromocion": "2025-05-01",
+    "fechaFinPromocion": "2025-06-25",
     "precioBase": 553.00,
     "precioConPromocion": 470.00
   },
   {
-    "id":5,
+    "id": 5,
     "nombre": "Luis Hernández",
     "correo": "luis.hernandez@mail.com",
     "colonia": "León / Jardines",
     "paqueteActivo": "Paquete B",
     "servicios": ["Internet", "Telefonía", "TV"],
-    "promociones": ["Promo Total 20% (Vigente)"],
+    "promociones": ["Promo Total 20%"],
+    "fechaInicioPromocion": "2025-06-25",
+    "fechaFinPromocion": "2025-07-15",
     "precioBase": 750.00,
     "precioConPromocion": 600.00
+  },
+  {
+    "id": 6,
+    "nombre": "Verónica Salinas",
+    "correo": "veronica.salinas@mail.com",
+    "colonia": "León / Chapalita",
+    "paqueteActivo": "Paquete C",
+    "servicios": ["Internet"],
+    "promociones": ["Promo Chapalita 10%"],
+    "fechaInicioPromocion": "2025-05-15",
+    "fechaFinPromocion": "2025-06-15",
+    "precioBase": 480.00,
+    "precioConPromocion": 432.00
+  },
+  {
+    "id": 7,
+    "nombre": "Eduardo Torres",
+    "correo": "eduardo.torres@mail.com",
+    "colonia": "León / Centro",
+    "paqueteActivo": "Paquete A",
+    "servicios": ["Telefonía"],
+    "promociones": ["Promo Especial 8%"],
+    "fechaInicioPromocion": "2025-06-01",
+    "fechaFinPromocion": "2025-06-20",
+    "precioBase": 300.00,
+    "precioConPromocion": 276.00
   }
 ]

@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import jsPDF from 'jspdf';
+import { jsPDF } from 'jspdf';
+
+
+
 
 export interface Package {
   id: number;

@@ -1,29 +1,46 @@
-<div class="table-container">
+<div class="table-container position-relative">
+
   <h4 class="mb-3">Lista de Suscriptores</h4>
 
-  <table class="table table-bordered table-striped">
+  <!-- Spinner centrado sobre la tabla mientras carga -->
+  <div *ngIf="isLoading" class="d-flex justify-content-center align-items-center position-absolute w-100 h-100" style="background-color: rgba(255,255,255,0.7); top: 0; left: 0; z-index: 10;">
+    <core-loading-spinner></core-loading-spinner>
+  </div>
+
+  <!-- Tabla visible solo cuando no está cargando -->
+  <table *ngIf="!isLoading" class="table table-bordered table-striped">
     <thead>
       <tr>
         <th>#</th>
         <th>Nombre</th>
-        <th>Correo</th>
         <th>Paquete Activo</th>
+        <th>Promocion Aplicada</th>
+        <th>Estado</th>
+
+
         <th></th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let user of usuarios let i=index">
-        <td>{{i+1}}</td>
+      <tr *ngFor="let user of usuarios; let i = index">
+        <td>{{ i + 1 }}</td>
         <td>{{ user.nombre }}</td>
-        <td>{{ user.correo }}</td>
         <td>{{ user.paqueteActivo }}</td>
+        <td>{{ user.promociones }}</td>
         <td>
-            <a
-              class="btn btn-primary info-btn"
-              [routerLink]="['/detalle',user.id]"
-            >
-              Info
-            </a>
+          <ng-container *ngIf="user.promociones && user.promociones.length>0; else sinPromo ">
+            <span *ngIf="esPromocionVigente(user.fechaInicioPromocion, user.fechaFinPromocion)" class="badge bg-success"> Promocion Vigente</span>
+            <span *ngIf="!esPromocionVigente(user.fechaInicioPromocion, user.fechaFinPromocion)" class="badge bg-danger"> Promocion Expirada</span>
+          </ng-container>
+
+          <ng-template #sinPromo>
+            <span class="badge bg-secondary">Sin Promoción Activa</span>
+          </ng-template>
+        </td>
+        <td>
+          <a class="btn btn-primary info-btn" [routerLink]="['/detalle', user.id]">
+            Info
+          </a>
         </td>
       </tr>
     </tbody>
