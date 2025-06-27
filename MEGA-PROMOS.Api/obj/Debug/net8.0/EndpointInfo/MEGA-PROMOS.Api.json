@@ -930,6 +930,49 @@
         }
       }
     },
+    "/api/PromocionesDatas/por-suscriptor/{suscriptorId}": {
+      "get": {
+        "tags": [
+          "PromocionesDatas"
+        ],
+        "parameters": [
+          {
+            "name": "suscriptorId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": { }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/PromoXSuscDatas": {
       "get": {
         "tags": [

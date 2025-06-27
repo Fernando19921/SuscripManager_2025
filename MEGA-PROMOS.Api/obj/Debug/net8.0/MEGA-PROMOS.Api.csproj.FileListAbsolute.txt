@@ -265,3 +265,4 @@ C:\Users\migue\Desktop\MEGA-PROMOS\MEGA-PROMOS.Api\MEGA-PROMOS.Api\bin\Debug\net
 C:\Users\migue\Desktop\MEGA-PROMOS\MEGA-PROMOS.Api\MEGA-PROMOS.Api\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Drawing.Common.dll
 C:\Users\migue\Desktop\MEGA-PROMOS\MEGA-PROMOS.Api\MEGA-PROMOS.Api\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\migue\Desktop\MEGA-PROMOS\MEGA-PROMOS.Api\MEGA-PROMOS.Api\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Windows.Extensions.dll
+C:\Users\migue\Desktop\MEGA-PROMOS\MEGA-PROMOS.Api\MEGA-PROMOS.Api\obj\Debug\net8.0\MEGA-PROMOS.Api.sourcelink.json
