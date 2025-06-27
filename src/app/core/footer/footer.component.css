@@ -1,5 +1,5 @@
 .footer {
-  background-color: #343a40;
+  background-color: #202224;
   color: #ffffff;
   text-align: center;
   padding: 1rem;
@@ -14,4 +14,3 @@
 .footer a:hover {
   text-decoration: underline;
 }
-

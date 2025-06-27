@@ -1,5 +1,5 @@
 .sidebar-container {
-  width: 220px;
+  width: 235px;
   height: 100vh;
   background-color: #f8f9fa;
   padding: 20px;
@@ -23,6 +23,7 @@
   border-radius: 5px;
   margin-bottom: 10px;
   transition: background-color 0.3s, color 0.3s;
+  background-color: white; 
 }
 
 .list-group-item:hover {
