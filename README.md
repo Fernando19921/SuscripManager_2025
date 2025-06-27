@@ -47,3 +47,7 @@ Esta API está preparada para ser consumida desde una aplicación Angular u otro
 Implementación de validaciones.
 
 Integración con el frontend Angular.
+
+## notas 
+la primera consulta solicitada la cual es solicitar el tipo de promo del suscriptor y mostrar vigencia, y validar si aun esta vigente o ya no.
+se encuentra dentro de promocionesDataControler
