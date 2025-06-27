@@ -1,49 +1,82 @@
+<!-- Spinner de carga -->
+<div *ngIf="isLoading" class="d-flex justify-content-center align-items-center" style="min-height: 200px;">
+  <core-loading-spinner></core-loading-spinner>
+</div>
+
+<!-- Contenido del suscriptor -->
 <div *ngIf="suscriptorSeleccionado" class="container mt-4 d-flex justify-content-center">
-  <div class="card shadow p-4 rounded-4" style="max-width: 550px; width: 100%;">
+  <div class="card shadow p-4 rounded-4" style="max-width: 550px; width: 100%; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
 
+    <!-- INICIO DEL CONTENIDO A EXPORTAR -->
+    <div #contenidoPDF style="padding: 10px;">
 
-    <div class="text-center mb-4">
-      <i class="fas fa-user-circle fa-5x text-primary"></i>
-      <h4 class="fw-bold mb-0">{{ suscriptorSeleccionado.nombre }}</h4>
+      <!-- Encabezado -->
+      <div class="text-center mb-3">
+        <img src="assets/mega.png" alt="Logo de la empresa" width="100" class="mb-2" />
+        <p class="text-muted mb-0" style="font-size: 14px;">Reporte de Suscripción</p>
+      </div>
+
+      <hr style="border: 1px solid #ccc;" />
+
+      <!-- Nombre -->
+      <div class="mb-4 text-center">
+        <h4 class="fw-bold text-primary mb-0">{{ suscriptorSeleccionado.nombre }}</h4>
+      </div>
+
+      <!-- Información general -->
+      <div class="mb-3" style="line-height: 1.6; font-size: 15px;">
+        <p><strong>Correo electrónico:</strong> {{ suscriptorSeleccionado.correo }}</p>
+        <p><strong>Colonia:</strong> {{ suscriptorSeleccionado.colonia }}</p>
+        <p><strong>Paquete contratado:</strong> {{ suscriptorSeleccionado.paqueteActivo }}</p>
+      </div>
+
+      <hr />
+
+      <!-- Servicios -->
+      <div class="mb-3">
+        <p class="fw-semibold mb-1">Servicios incluidos:</p>
+        <ul class="mb-0 ps-3">
+          <li *ngFor="let s of suscriptorSeleccionado.servicios">{{ s }}</li>
+        </ul>
+      </div>
+
+      <!-- Promoción -->
+      <div class="mb-3">
+        <p class="fw-semibold mb-1">Promoción aplicada:</p>
+        <p class="mb-2">{{ suscriptorSeleccionado.promociones || 'Ninguna' }}</p>
+
+        <ng-container *ngIf="suscriptorSeleccionado.promociones && suscriptorSeleccionado.promociones.length > 0; else sinPromociones">
+          <div *ngIf="esPromocionVigente(suscriptorSeleccionado.fechaInicioPromocion, suscriptorSeleccionado.fechaFinPromocion)">
+            <span class="fw-semibold">Estado de Promoción:</span>
+            <span class="badge bg-success">Activa</span>
+          </div>
+          <div *ngIf="!esPromocionVigente(suscriptorSeleccionado.fechaInicioPromocion, suscriptorSeleccionado.fechaFinPromocion)">
+            <span class="fw-semibold">Estado de Promoción:</span>
+            <span class="badge bg-danger">Inactiva</span>
+          </div>
+        </ng-container>
+
+        <ng-template #sinPromociones>
+          <span class="badge bg-secondary">Sin Promoción Activa</span>
+        </ng-template>
+      </div>
+
+      <!-- Precios -->
+      <div class="mb-3" style="line-height: 1.6; font-size: 15px;">
+        <p><strong>Precio base:</strong> ${{ suscriptorSeleccionado.precioBase }}</p>
+        <p><strong>Precio con promoción:</strong> ${{ suscriptorSeleccionado.precioConPromocion }}</p>
+      </div>
+
+      <hr style="border: 1px solid #ccc;" />
+      <p class="text-end text-muted" style="font-size: 12px;">Generado por SuscripManager</p>
     </div>
+    <!-- FIN DEL CONTENIDO A EXPORTAR -->
 
-
-    <div class="mb-3">
-      <p><strong>📧 Correo:</strong> {{ suscriptorSeleccionado.correo }}</p>
-      <p><strong>📍 Colonia:</strong> {{ suscriptorSeleccionado.colonia }}</p>
-      <p><strong>🎁 Paquete:</strong> {{ suscriptorSeleccionado.paqueteActivo }}</p>
-    </div>
-
-    <hr>
-
-
-    <div class="mb-3">
-      <p><strong>🔧 Servicios incluidos:</strong></p>
-      <ul>
-        <li *ngFor="let s of suscriptorSeleccionado.servicios">{{ s }}</li>
-      </ul>
-    </div>
-
-
-    <div class="mb-3">
-      <p><strong>🏷️ Promoción aplicada:</strong> {{ suscriptorSeleccionado.promociones }}</p>
-    </div>
-
-
-    <div class="mb-3">
-      <p><strong>💰 Precio base:</strong> ${{ suscriptorSeleccionado.precioBase }}</p>
-      <p><strong>💸 Precio con promoción:</strong> ${{ suscriptorSeleccionado.precioConPromocion }}</p>
-    </div>
-
-
+    <!-- Botones -->
     <div class="d-flex justify-content-end gap-2 mt-4">
-      <a routerLink="/detalle-suscriptor" class="btn btn-outline-primary btn-sm">
-        <i class="fas fa-arrow-left me-1"></i> Volver
-      </a>
-
-      <button (click)="exportarPDF()" class="btn btn-success btn-sm">
-        <i class="fas fa-file-export me-1"></i> Exportar
-      </button>
+      <a routerLink="/detalle-suscriptor" class="btn btn-outline-secondary btn-sm">Volver</a>
+      <button (click)="exportarPDF()" class="btn btn-primary btn-sm">Exportar PDF</button>
     </div>
+
   </div>
 </div>
