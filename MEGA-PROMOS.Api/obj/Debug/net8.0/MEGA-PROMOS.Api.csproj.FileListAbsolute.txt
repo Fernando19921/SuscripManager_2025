@@ -71,7 +71,6 @@ C:\Users\migue\Desktop\MEGA-PROMOS\MEGA-PROMOS.Api\MEGA-PROMOS.Api\obj\Debug\net
 C:\Users\migue\Desktop\MEGA-PROMOS\MEGA-PROMOS.Api\MEGA-PROMOS.Api\obj\Debug\net8.0\staticwebassets.build.json.cache
 C:\Users\migue\Desktop\MEGA-PROMOS\MEGA-PROMOS.Api\MEGA-PROMOS.Api\obj\Debug\net8.0\staticwebassets.development.json
 C:\Users\migue\Desktop\MEGA-PROMOS\MEGA-PROMOS.Api\MEGA-PROMOS.Api\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-C:\Users\migue\Desktop\MEGA-PROMOS\MEGA-PROMOS.Api\MEGA-PROMOS.Api\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 C:\Users\migue\Desktop\MEGA-PROMOS\MEGA-PROMOS.Api\MEGA-PROMOS.Api\obj\Debug\net8.0\MEGA-PRO.2A5E8CD3.Up2Date
 C:\Users\migue\Desktop\MEGA-PROMOS\MEGA-PROMOS.Api\MEGA-PROMOS.Api\obj\Debug\net8.0\MEGA-PROMOS.Api.dll
 C:\Users\migue\Desktop\MEGA-PROMOS\MEGA-PROMOS.Api\MEGA-PROMOS.Api\obj\Debug\net8.0\refint\MEGA-PROMOS.Api.dll
@@ -266,3 +265,19 @@ C:\Users\migue\Desktop\MEGA-PROMOS\MEGA-PROMOS.Api\MEGA-PROMOS.Api\bin\Debug\net
 C:\Users\migue\Desktop\MEGA-PROMOS\MEGA-PROMOS.Api\MEGA-PROMOS.Api\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\migue\Desktop\MEGA-PROMOS\MEGA-PROMOS.Api\MEGA-PROMOS.Api\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Windows.Extensions.dll
 C:\Users\migue\Desktop\MEGA-PROMOS\MEGA-PROMOS.Api\MEGA-PROMOS.Api\obj\Debug\net8.0\MEGA-PROMOS.Api.sourcelink.json
+C:\Users\migue\Desktop\MEGA-PROMOS\MEGA-PROMOS.Api\MEGA-PROMOS.Api\bin\Debug\net8.0\Microsoft.Build.Locator.dll
+C:\Users\migue\Desktop\MEGA-PROMOS\MEGA-PROMOS.Api\MEGA-PROMOS.Api\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.dll
+C:\Users\migue\Desktop\MEGA-PROMOS\MEGA-PROMOS.Api\MEGA-PROMOS.Api\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.MSBuild.dll
+C:\Users\migue\Desktop\MEGA-PROMOS\MEGA-PROMOS.Api\MEGA-PROMOS.Api\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\migue\Desktop\MEGA-PROMOS\MEGA-PROMOS.Api\MEGA-PROMOS.Api\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\migue\Desktop\MEGA-PROMOS\MEGA-PROMOS.Api\MEGA-PROMOS.Api\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\migue\Desktop\MEGA-PROMOS\MEGA-PROMOS.Api\MEGA-PROMOS.Api\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\migue\Desktop\MEGA-PROMOS\MEGA-PROMOS.Api\MEGA-PROMOS.Api\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\migue\Desktop\MEGA-PROMOS\MEGA-PROMOS.Api\MEGA-PROMOS.Api\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\migue\Desktop\MEGA-PROMOS\MEGA-PROMOS.Api\MEGA-PROMOS.Api\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\migue\Desktop\MEGA-PROMOS\MEGA-PROMOS.Api\MEGA-PROMOS.Api\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\migue\Desktop\MEGA-PROMOS\MEGA-PROMOS.Api\MEGA-PROMOS.Api\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\migue\Desktop\MEGA-PROMOS\MEGA-PROMOS.Api\MEGA-PROMOS.Api\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\migue\Desktop\MEGA-PROMOS\MEGA-PROMOS.Api\MEGA-PROMOS.Api\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\migue\Desktop\MEGA-PROMOS\MEGA-PROMOS.Api\MEGA-PROMOS.Api\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\migue\Desktop\MEGA-PROMOS\MEGA-PROMOS.Api\MEGA-PROMOS.Api\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
