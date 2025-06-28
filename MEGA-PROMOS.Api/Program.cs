@@ -44,6 +44,9 @@ builder.Services.AddDbContext<PromoXSuscDbContext>(options =>
 //puente a suscriptores x paquete
 builder.Services.AddDbContext<SuscXPaqDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("MegaCon")));
+//puente a suscriptores x paquete
+builder.Services.AddDbContext<PaquXPromoDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("MegaCon")));
 
 
 var app = builder.Build();
