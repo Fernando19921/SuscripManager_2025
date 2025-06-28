@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using MEGA_PROMOS.Api.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MEGA_PROMOS.Api.Model;
 
 namespace MEGA_PROMOS.Api.Controllers
 {
@@ -102,6 +97,95 @@ namespace MEGA_PROMOS.Api.Controllers
         private bool SuscriptorDataExists(int id)
         {
             return _context.Suscriptor.Any(e => e.suscriptor_id == id);
+        }
+        // GET: api/PromocionesDatas/suscriptorInfo
+        /*[HttpGet("suscriptorInfo")]//arroja la info de la vista Lista de suscriptores
+        public async Task<ActionResult<IEnumerable<object>>> GetPromocionesPorSuscriptor()
+        {
+            var hoy = DateTime.Today;//ubicamos el dia para las validaciones de la promo c;
+
+            var suscriptores = await _context.Suscriptor.ToListAsync();
+            var resultadoSuscriptores = new List<object>();
+
+
+            foreach (var susc in suscriptores)
+            {
+                var promociones = await (
+                    from sus in _context.Suscriptor
+                    from sp in _context.suscriptores_x_paquete
+                    join pxp in _context.paquete_x_promocion on sp.paquete_id equals pxp.paquete_id
+                    join promo in _context.promociones on pxp.promocion_id equals promo.promocion_id
+                    join p in _context.paquetes on sp.paquete_id equals p.paquete_id
+                    where sp.suscriptor_id == susc.suscriptor_id//validamos la fecha de inicio por la del vigencia
+                          && promo.fecha_inicio <= hoy
+                          && promo.fecha_fin >= hoy
+                    select new//devuelve el cosntructor, que devuelve(redundantemente) un objeto con la info
+                    {
+                        sus.suscriptor_id,
+                        sus.nombre,
+                        Paquete = p.nombre_paquete,
+                        promo.nombre,
+                        Vigente = hoy <= promo.fecha_fin ? "Vigente" : "Expirada"// una condicional ternaria para avisarnos si esta expedida o vigente
+                    }
+                ).Distinct().ToListAsync();//aqui es para asegurarnos que no se repitan las promos
+                /*if (promociones.Any())//
+                {
+                    resultadoSuscriptores.Add(new
+                    {
+                        Suscriptor = new
+                        {
+                            susc.suscriptor_id,
+                            susc.nombre
+                        },
+                        Promociones = promociones
+                    });
+                }
+            }
+
+            if (!resultadoSuscriptores.Any())
+            {
+                return NotFound(new { mensaje = "No hay promociones vigentes para ningún suscriptor." });
+            }
+            return Ok(resultadoSuscriptores);//200!!!
+        }*/
+        [HttpGet("suscriptorInfo")]
+        public async Task<ActionResult<IEnumerable<object>>> GetPromocionesPorSuscriptor()
+        {
+            var hoy = DateTime.Today;
+
+            var suscriptores = await _context.Suscriptor.ToListAsync();
+            var resultadoSuscriptores = new List<object>();
+
+            foreach (var susc in suscriptores)
+            {
+                var promociones = await (
+                    from sp in _context.suscriptores_x_paquete
+                    join pxp in _context.paquete_x_promocion on sp.paquete_id equals pxp.paquete_id
+                    join promo in _context.promociones on pxp.promocion_id equals promo.promocion_id
+                    join p in _context.paquetes on sp.paquete_id equals p.paquete_id
+                    where sp.suscriptor_id == susc.suscriptor_id
+                          && (sp.fecha_terminacion == null || sp.fecha_terminacion >= hoy)
+                          && promo.fecha_inicio <= hoy
+                          && promo.fecha_fin >= hoy
+                    select new
+                    {
+                        susc.suscriptor_id,
+                        susc.nombre,
+                        Paquete = p.nombre_paquete,
+                        Promocion = promo.nombre,
+                        Vigente = hoy <= promo.fecha_fin ? "Vigente" : "Expirada"
+                    }
+                ).Distinct().ToListAsync();
+
+                
+
+            if (promociones.Any())
+                {
+                    resultadoSuscriptores.AddRange(promociones);
+                }
+            }
+
+            return Ok(resultadoSuscriptores);
         }
     }
 }
