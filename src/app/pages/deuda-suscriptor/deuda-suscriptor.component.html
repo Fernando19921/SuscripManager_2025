@@ -1,15 +1,15 @@
-<mat-card class="max-w-lg mx-auto">
+<mat-card class="deuda-container">
   <mat-card-header>
     <mat-card-title>Calculadora de Deuda</mat-card-title>
   </mat-card-header>
 
   <mat-card-content>
     <!-- 1. Contenedor de selección en dos columnas -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+    <div class="form-grid">
       <!-- Suscriptor -->
-      <mat-form-field appearance="fill" class="w-full">
+      <mat-form-field appearance="fill" class="form-field">
         <mat-label>Selecciona Suscriptor</mat-label>
-        <mat-select [(ngModel)]="selectedSubscriberId" (selectionChange)="onSelectSubscriber()" panelClass="wide-select-panel" >
+        <mat-select [(ngModel)]="selectedSubscriberId" (selectionChange)="onSelectSubscriber()" panelClass="wide-select-panel">
           <mat-option [value]="null" disabled>Selecciona</mat-option>
           <mat-option *ngFor="let sub of subscribers" [value]="sub.id">
             {{ sub.name }}
@@ -18,7 +18,7 @@
       </mat-form-field>
 
       <!-- Paquete -->
-      <mat-form-field appearance="fill" class="w-full" *ngIf="selectedSubscriberId">
+      <mat-form-field *ngIf="selectedSubscriberId" appearance="fill" class="form-field">
         <mat-label>Selecciona Paquete</mat-label>
         <mat-select [(ngModel)]="selectedPackageId" (selectionChange)="onSelectPackage()" panelClass="wide-select-panel">
           <mat-option [value]="null" disabled>Selecciona</mat-option>
@@ -30,10 +30,10 @@
     </div>
 
     <!-- 2. Detalles del Paquete -->
-    <div *ngIf="selectedPackage" class="mb-4">
+    <div *ngIf="selectedPackage" class="package-details">
       <h3>Detalles del Paquete</h3>
       <p><strong>Descripción:</strong> {{ selectedPackage.description }}</p>
-      <p> <strong>Precio:</strong> {{ selectedPackage.price | currency:'MXN':'symbol':'1.0-0' }} </p>
+      <p><strong>Precio:</strong> {{ selectedPackage.price | currency:'MXN':'symbol':'1.0-0' }}</p>
       <ul>
         <li *ngFor="let svc of selectedPackage.services">{{ svc }}</li>
       </ul>
@@ -42,32 +42,38 @@
     <!-- 3. Promociones -->
     <div *ngIf="selectedPackage">
       <h3>Promociones</h3>
-      <div *ngIf="loadingPromos" class="flex justify-center py-4">
+      <div *ngIf="loadingPromos" class="spinner-container">
         <mat-progress-spinner diameter="40" mode="indeterminate"></mat-progress-spinner>
       </div>
       <div *ngIf="!loadingPromos">
-        <mat-checkbox *ngFor="let promo of promotions" [checked]="selectedPromotions.includes(promo.id)" [disabled]="promo.autoApplied" (change)="onTogglePromotion(promo)" >
+        <mat-checkbox *ngFor="let promo of promotions"
+                      [checked]="selectedPromotions.includes(promo.id)"
+                      [disabled]="promo.autoApplied"
+                      (change)="onTogglePromotion(promo)">
           {{ promo.description }}
           <small>
-            ({{ promo.discountType === 'percentage'
-              ? promo.value + '%'
-              : ('$' + promo.value) }})
+            ({{ promo.discountType === 'percentage' ? promo.value + '%' : ('$' + promo.value) }})
           </small>
         </mat-checkbox>
-        <p *ngIf="!promotions.length" class="italic">No hay promociones.</p>
+        <p *ngIf="!promotions.length" class="no-promos">No hay promociones.</p>
       </div>
     </div>
 
     <!-- 4. Total -->
-    <div *ngIf="selectedPackage" class="text-center my-6">
+    <div *ngIf="selectedPackage" class="total-container">
       <h3>Total a pagar</h3>
-      <p class="text-3xl font-bold text-primary"> {{ calculatedTotal !== null ? (calculatedTotal | currency:'MXN':'symbol':'1.0-0')  : '---' }} </p>
+      <p class="total-amount">
+        {{ calculatedTotal !== null ? (calculatedTotal | currency:'MXN':'symbol':'1.0-0') : '---' }}
+      </p>
     </div>
   </mat-card-content>
 
   <!-- 5. Botones de acción -->
-  <mat-card-actions class="flex justify-end space-x-6 mt-8">
+  <mat-card-actions class="actions">
     <button mat-stroked-button (click)="calculateTotal()">Calcular</button>
-    <button mat-flat-button color="primary" (click)="exportToPDF()" [disabled]="calculatedTotal === null" > Exportar PDF </button>
+    <button mat-flat-button color="primary" (click)="exportToPDF()" [disabled]="calculatedTotal === null">
+      Exportar PDF
+    </button>
   </mat-card-actions>
 </mat-card>
+

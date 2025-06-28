@@ -207,4 +207,3 @@ export class DeudaSuscriptorComponent implements OnInit {
     doc.save('deuda-suscriptor.pdf');
   }
 }
-
