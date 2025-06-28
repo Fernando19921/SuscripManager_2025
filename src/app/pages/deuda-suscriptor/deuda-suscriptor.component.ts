@@ -8,7 +8,6 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-
 interface Subscriber {
   id: number;
   name: string;
@@ -46,7 +45,7 @@ interface Promotion {
   styleUrls: ['./deuda-suscriptor.component.css'],
 })
 export class DeudaSuscriptorComponent implements OnInit {
-  // Datos
+  // Datos simulados
   subscribers: Subscriber[] = [];
   packages: Package[] = [];
   promotions: Promotion[] = [];
@@ -55,18 +54,18 @@ export class DeudaSuscriptorComponent implements OnInit {
   selectedSubscriberId: number | null = null;
   selectedPackageId: number | null = null;
 
-  // Objetos completos
+  // Objeto completo del paquete elegido
   selectedPackage: Package | null = null;
 
-  // Promos aplicadas
+  // Promociones aplicadas
   selectedPromotions: number[] = [];
 
   // Flags de carga / error
   loadingPromos = false;
   errorPromos: string | null = null;
 
-  // Resultado
-  total = 0;
+  // Total calculado solo al presionar botón
+  calculatedTotal: number | null = null;
 
   ngOnInit() {
     this.loadSubscribers();
@@ -74,8 +73,7 @@ export class DeudaSuscriptorComponent implements OnInit {
   }
 
   private loadSubscribers() {
-    // TODO: Reemplazar simulación por llamada real:
-    // this.subscriberService.getAll().subscribe(...)
+    // TODO: reemplazar simulación por llamada real
     this.subscribers = [
       { id: 1, name: 'Juan Pérez' },
       { id: 2, name: 'María López' },
@@ -83,25 +81,41 @@ export class DeudaSuscriptorComponent implements OnInit {
   }
 
   private loadPackages() {
-    // TODO: Reemplazar simulación por llamada real:
-    // this.packageService.getPackages().subscribe(...)
+    // TODO: reemplazar simulación por llamada real
     this.packages = [
-      { id: 1, name: 'Paquete A', description: 'Básico', price: 199, services: ['Internet 20MB', 'Llamadas locales'] },
-      { id: 2, name: 'Paquete B', description: 'Avanzado', price: 349, services: ['Internet 100MB', 'TV básica', 'Llamadas ilimitadas'] },
+      {
+        id: 1,
+        name: 'Paquete A',
+        description: 'Básico',
+        price: 199,
+        services: ['Internet 20MB', 'Llamadas locales'],
+      },
+      {
+        id: 2,
+        name: 'Paquete B',
+        description: 'Avanzado',
+        price: 349,
+        services: ['Internet 100MB', 'TV básica', 'Llamadas ilimitadas'],
+      },
     ];
   }
 
   onSelectSubscriber() {
-    // Reiniciar todo al cambiar de suscriptor
+    // Resetear todo al cambiar suscriptor
     this.selectedPackageId = null;
     this.selectedPackage = null;
     this.promotions = [];
     this.selectedPromotions = [];
-    this.total = 0;
+    this.calculatedTotal = null;
   }
 
   onSelectPackage() {
-    this.selectedPackage = this.packages.find(p => p.id === this.selectedPackageId) ?? null;
+    this.selectedPackage = this.packages.find(
+      (p) => p.id === this.selectedPackageId
+    ) ?? null;
+    this.promotions = [];
+    this.selectedPromotions = [];
+    this.calculatedTotal = null;
     this.loadPromotions();
   }
 
@@ -111,18 +125,30 @@ export class DeudaSuscriptorComponent implements OnInit {
     this.loadingPromos = true;
     this.errorPromos = null;
 
-    // TODO: Consumir API real cuando esté lista:
-    // this.promoService.getPromos(this.selectedPackageId!, coloniaId, this.selectedSubscriberId!).subscribe(...)
+    // TODO: reemplazar con llamada real
     setTimeout(() => {
-      // Simulación de respuesta
       this.promotions = [
-        { id: 1, description: '10% por ser nuevo suscriptor', discountType: 'percentage', value: 10, autoApplied: true },
-        { id: 2, description: '$50 por referido', discountType: 'fixed', value: 50, autoApplied: false },
+        {
+          id: 1,
+          description: '10% por ser nuevo suscriptor',
+          discountType: 'percentage',
+          value: 10,
+          autoApplied: true,
+        },
+        {
+          id: 2,
+          description: '20% por referido',
+          discountType: 'fixed',
+          value: 50,
+          autoApplied: false,
+        },
       ];
-      // Aplica autoPromos
-      this.selectedPromotions = this.promotions.filter(p => p.autoApplied).map(p => p.id);
+      // Sólo pre-selecciona las promos autoApplied
+      this.selectedPromotions = this.promotions
+        .filter((p) => p.autoApplied)
+        .map((p) => p.id);
       this.loadingPromos = false;
-      this.calculateTotal();
+      // NO calcular automáticamente aquí
     }, 800);
   }
 
@@ -133,41 +159,52 @@ export class DeudaSuscriptorComponent implements OnInit {
     } else {
       this.selectedPromotions.push(promo.id);
     }
-    this.calculateTotal();
+    // NO calcular automáticamente aquí
   }
 
   calculateTotal() {
     if (!this.selectedPackage) {
-      this.total = 0;
+      this.calculatedTotal = null;
       return;
     }
     let t = this.selectedPackage.price;
-    for (const promo of this.promotions.filter(p => this.selectedPromotions.includes(p.id))) {
+    for (const promo of this.promotions.filter((p) =>
+      this.selectedPromotions.includes(p.id)
+    )) {
       if (promo.discountType === 'percentage') {
         t -= (promo.value / 100) * this.selectedPackage.price;
       } else {
         t -= promo.value;
       }
     }
-    this.total = Math.max(0, Math.round(t));
+    this.calculatedTotal = Math.max(0, Math.round(t));
   }
 
   exportToPDF() {
+    if (this.calculatedTotal === null) return;
     const doc = new jsPDF();
     doc.setFontSize(14);
     doc.text('Resumen de Deuda', 10, 10);
-    doc.text(`Suscriptor: ${this.subscribers.find(s => s.id === this.selectedSubscriberId)?.name}`, 10, 20);
+    doc.text(
+      `Suscriptor: ${
+        this.subscribers.find((s) => s.id === this.selectedSubscriberId)
+          ?.name
+      }`,
+      10,
+      20
+    );
     doc.text(`Paquete: ${this.selectedPackage?.name}`, 10, 30);
     doc.text(`Precio base: $${this.selectedPackage?.price}`, 10, 40);
     doc.text('Promociones:', 10, 50);
     let y = 60;
     this.promotions
-      .filter(p => this.selectedPromotions.includes(p.id))
-      .forEach(p => {
+      .filter((p) => this.selectedPromotions.includes(p.id))
+      .forEach((p) => {
         doc.text(`- ${p.description}`, 12, y);
         y += 8;
       });
-    doc.text(`Total a pagar: $${this.total}`, 10, y + 10);
+    doc.text(`Total a pagar: $${this.calculatedTotal}`, 10, y + 10);
     doc.save('deuda-suscriptor.pdf');
   }
 }
+
