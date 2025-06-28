@@ -99,7 +99,8 @@ namespace MEGA_PROMOS.Api.Controllers
             return _context.Suscriptor.Any(e => e.suscriptor_id == id);
         }
         // GET: api/PromocionesDatas/suscriptorInfo
-        [HttpGet("suscriptorInfo")]
+        //Detalle de suscriptores 
+        [HttpGet("suscriptorInfo")]//arroja la informacion del suscriptor con detalle 
         public async Task<ActionResult<IEnumerable<object>>> GetPromocionesPorSuscriptor()
         {
             var hoy = DateTime.Today;
@@ -107,9 +108,9 @@ namespace MEGA_PROMOS.Api.Controllers
             var suscriptores = await _context.Suscriptor.ToListAsync();
             var resultadoSuscriptores = new List<object>();
 
-            foreach (var susc in suscriptores)
+            foreach (var susc in suscriptores)//recorremos por todos los suscriptores
             {
-                var promociones = await (
+                var promociones = await (//realizamos los joins de las tablas requeridas para arrojar la info
                     from sp in _context.suscriptores_x_paquete
                     join pxp in _context.paquete_x_promocion on sp.paquete_id equals pxp.paquete_id
                     join promo in _context.promociones on pxp.promocion_id equals promo.promocion_id
@@ -117,7 +118,6 @@ namespace MEGA_PROMOS.Api.Controllers
                     where sp.suscriptor_id == susc.suscriptor_id
                           //&& (sp.fecha_terminacion == null || sp.fecha_terminacion >= hoy)
                           && promo.fecha_inicio <= hoy
-                          //&& promo.fecha_fin >= hoy
                     select new
                     {
                         susc.suscriptor_id,
@@ -137,5 +137,54 @@ namespace MEGA_PROMOS.Api.Controllers
             return Ok(resultadoSuscriptores);
         }
 
+        //Reporte de suscriptor
+        // GET: api/SuscriptorDatas/reporte-suscriptor/5
+        
+        [HttpGet("reporte-suscriptor/{suscriptorId}")]//mediante id
+        public async Task<ActionResult<IEnumerable<object>>> GetPromocionesPorSuscriptor(int suscriptorId)
+        {
+            var hoy = DateTime.Today;//ubicamos el dia para las validaciones de la promo c;
+
+            var promociones = await (
+                from susc in _context.Suscriptor
+                join col in _context.Colonias on susc.colonia_id equals col.colonia_id
+                join sp in _context.suscriptores_x_paquete on susc.suscriptor_id equals sp.suscriptor_id
+                join pxp in _context.paquete_x_promocion on sp.paquete_id equals pxp.paquete_id
+                
+                join promo in _context.promociones on pxp.promocion_id equals promo.promocion_id
+                join paq in _context.paquetes on sp.paquete_id equals paq.paquete_id
+                where sp.suscriptor_id == suscriptorId//validamos la fecha de inicio por la del vigencia
+                      && promo.fecha_inicio <= hoy
+                      && col.colonia_id == susc.colonia_id
+                      && paq.paquete_id == sp.paquete_id
+                select new//devuelve el cosntructor, que devuelve(redundantemente) un objeto con la info
+                {
+                    susc.nombre,
+                    susc.correo,
+                    Colonia = col.nombre,
+                    paq.nombre_paquete,
+                    //servicios, tomamos los servicios asignados
+                    Servicios = (from pxs in _context.paquete_x_servicios
+                                 join s in _context.servicios on pxs.servicio_id equals s.servicio_id
+                                 where pxs.paquete_id == paq.paquete_id
+                                 select s.nombre_servicio).ToList(),
+                    promo.descripcion,
+                    Vigente = hoy <= promo.fecha_fin ? "Activa" : "Expirada",// una condicional ternaria para avisarnos si esta expedida o vigente
+                    //precio base del paquete
+                    paq.precio,
+                    //precio con promocion
+                    ConDescuento = promo.tipo_descuento == "porcentaje"
+                        ? paq.precio - (paq.precio * promo.descuento / 100)
+                        : paq.precio - promo.descuento
+                }
+            ).ToListAsync();//aqui es para asegurarnos que no se repitan las promos
+
+            if (!promociones.Any())//si la lista que se obtiene de la DB tiene algo el .Any devuelve un true y si no, pues lo contrario y arroja el mensaje
+            {
+                return NotFound(new { mensaje = "No hay promociones vigentes para este suscriptor." });//en caso de no tener promos
+            }
+
+            return Ok(promociones);//200!!!
+        }
     }
 }
