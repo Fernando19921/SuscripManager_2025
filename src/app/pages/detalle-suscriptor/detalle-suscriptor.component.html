@@ -25,20 +25,20 @@
       <tr *ngFor="let user of usuarios; let i = index">
         <td>{{ i + 1 }}</td>
         <td>{{ user.nombre }}</td>
-        <td>{{ user.paqueteActivo }}</td>
-        <td>{{ user.promociones }}</td>
+        <td>{{ user.paquete}}</td>
+        <td>{{ user.promocion }}</td>
         <td>
-          <ng-container *ngIf="user.promociones && user.promociones.length>0; else sinPromo ">
-            <span *ngIf="esPromocionVigente(user.fechaInicioPromocion, user.fechaFinPromocion)" class="badge bg-success"> Promocion Vigente</span>
-            <span *ngIf="!esPromocionVigente(user.fechaInicioPromocion, user.fechaFinPromocion)" class="badge bg-danger"> Promocion Expirada</span>
-          </ng-container>
+
+            <span *ngIf="esPromocionVigente(user.vigente.toLocaleLowerCase())" class="badge bg-success"> Promocion Vigente</span>
+            <span *ngIf="!esPromocionVigente(user.vigente.toLocaleLowerCase())" class="badge bg-danger"> Promocion Expirada</span>
+
 
           <ng-template #sinPromo>
             <span class="badge bg-secondary">Sin Promoción Activa</span>
           </ng-template>
         </td>
         <td>
-          <a class="btn btn-primary info-btn" [routerLink]="['/detalle', user.id]">
+          <a class="btn btn-primary info-btn" [routerLink]="['/detalle', user.suscriptor_id]">
             Info
           </a>
         </td>

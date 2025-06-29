@@ -1,13 +1,20 @@
 export interface suscriptor{
     id:number,
     nombre:string,
-    correo:string,
-    colonia:string,
-    paqueteActivo:string,
-    servicios:string [],
-    promociones: [],
-    fechaInicioPromocion:string,
-    fechaFinPromocion:string,
-    precioBase:number,
-    precioConPromocion: number
+    paquete:string,
+    promocion:string,
+    suscriptor_id:number,
+    vigente:string
+}
+
+export interface reporteSuscriptor{
+  nombre:string,
+  correo:string,
+  colonia:string,
+  nombre_paquete:string,
+  servicios:string[],
+  descripcion:string,
+  vigente:string,
+  precio:number,
+  conDescuento:number
 }

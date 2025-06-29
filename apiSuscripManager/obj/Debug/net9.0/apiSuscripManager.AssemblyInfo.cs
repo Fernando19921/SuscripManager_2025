@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("apiSuscripManager")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f2076dc17eeb200fddbff564bddf01ee2c3d1c25")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c0f495c2f6369fa449ebc8cab543dca9e457b929")]
 [assembly: System.Reflection.AssemblyProductAttribute("apiSuscripManager")]
 [assembly: System.Reflection.AssemblyTitleAttribute("apiSuscripManager")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
