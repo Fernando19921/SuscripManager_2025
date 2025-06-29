@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import jsPDF from 'jspdf';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -7,6 +7,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatChipsModule } from '@angular/material/chips';
 
 interface Subscriber {
   id: number;
@@ -39,8 +41,11 @@ interface Promotion {
     MatSelectModule,
     MatCheckboxModule,
     MatButtonModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatProgressBarModule,
+    MatChipsModule
   ],
+   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   templateUrl: './deuda-suscriptor.component.html',
   styleUrls: ['./deuda-suscriptor.component.css'],
 })
@@ -64,8 +69,11 @@ export class DeudaSuscriptorComponent implements OnInit {
   loadingPromos = false;
   errorPromos: string | null = null;
 
-  // Total calculado solo al presionar botón
+  // Totales y desglose mensual
   calculatedTotal: number | null = null;
+  discountPercentage: number = 0;
+  monthlyPayments: number[] = [];
+  fourthMonthPayment: number | null = null;
 
   ngOnInit() {
     this.loadSubscribers();
@@ -73,7 +81,6 @@ export class DeudaSuscriptorComponent implements OnInit {
   }
 
   private loadSubscribers() {
-    // TODO: reemplazar simulación por llamada real
     this.subscribers = [
       { id: 1, name: 'Juan Pérez' },
       { id: 2, name: 'María López' },
@@ -81,7 +88,6 @@ export class DeudaSuscriptorComponent implements OnInit {
   }
 
   private loadPackages() {
-    // TODO: reemplazar simulación por llamada real
     this.packages = [
       {
         id: 1,
@@ -101,65 +107,36 @@ export class DeudaSuscriptorComponent implements OnInit {
   }
 
   onSelectSubscriber() {
-    // Resetear todo al cambiar suscriptor
-    this.selectedPackageId = null;
-    this.selectedPackage = null;
-    this.promotions = [];
-    this.selectedPromotions = [];
-    this.calculatedTotal = null;
+    this.resetAll();
   }
 
   onSelectPackage() {
-    this.selectedPackage = this.packages.find(
-      (p) => p.id === this.selectedPackageId
-    ) ?? null;
-    this.promotions = [];
+    this.selectedPackage = this.packages.find(p => p.id === this.selectedPackageId) ?? null;
     this.selectedPromotions = [];
     this.calculatedTotal = null;
+    this.monthlyPayments = [];
+    this.fourthMonthPayment = null;
+    this.discountPercentage = 0;
     this.loadPromotions();
   }
 
   private loadPromotions() {
     if (!this.selectedPackage) return;
-
     this.loadingPromos = true;
-    this.errorPromos = null;
-
-    // TODO: reemplazar con llamada real
     setTimeout(() => {
       this.promotions = [
-        {
-          id: 1,
-          description: '10% por ser nuevo suscriptor',
-          discountType: 'percentage',
-          value: 10,
-          autoApplied: true,
-        },
-        {
-          id: 2,
-          description: '20% por referido',
-          discountType: 'fixed',
-          value: 50,
-          autoApplied: false,
-        },
+        { id: 1, description: '10% por ser nuevo suscriptor', discountType: 'percentage', value: 10, autoApplied: true },
+        { id: 2, description: '20% por referido', discountType: 'fixed', value: 50, autoApplied: false }
       ];
-      // Sólo pre-selecciona las promos autoApplied
-      this.selectedPromotions = this.promotions
-        .filter((p) => p.autoApplied)
-        .map((p) => p.id);
+      this.selectedPromotions = this.promotions.filter(p => p.autoApplied).map(p => p.id);
       this.loadingPromos = false;
-      // NO calcular automáticamente aquí
     }, 800);
   }
 
   onTogglePromotion(promo: Promotion) {
     const idx = this.selectedPromotions.indexOf(promo.id);
-    if (idx >= 0) {
-      this.selectedPromotions.splice(idx, 1);
-    } else {
-      this.selectedPromotions.push(promo.id);
-    }
-    // NO calcular automáticamente aquí
+    if (idx >= 0) this.selectedPromotions.splice(idx, 1);
+    else this.selectedPromotions.push(promo.id);
   }
 
   calculateTotal() {
@@ -167,17 +144,21 @@ export class DeudaSuscriptorComponent implements OnInit {
       this.calculatedTotal = null;
       return;
     }
-    let t = this.selectedPackage.price;
-    for (const promo of this.promotions.filter((p) =>
-      this.selectedPromotions.includes(p.id)
-    )) {
-      if (promo.discountType === 'percentage') {
-        t -= (promo.value / 100) * this.selectedPackage.price;
-      } else {
-        t -= promo.value;
-      }
+    const base = this.selectedPackage.price;
+    let total = base;
+    for (const promo of this.promotions.filter(p => this.selectedPromotions.includes(p.id))) {
+      total -= promo.discountType === 'percentage'
+        ? (promo.value / 100) * base
+        : promo.value;
     }
-    this.calculatedTotal = Math.max(0, Math.round(t));
+    this.calculatedTotal = Math.max(0, Math.round(total));
+    // porcentaje de ahorro
+    this.discountPercentage = Math.round(((base - this.calculatedTotal) / base) * 100);
+    // pagos mensuales
+    const share = +(this.calculatedTotal / 3).toFixed(2);
+    this.monthlyPayments = [share, share, share];
+    // pago a partir del mes 4 (sin promoción)
+    this.fourthMonthPayment = base;
   }
 
   exportToPDF() {
@@ -185,25 +166,29 @@ export class DeudaSuscriptorComponent implements OnInit {
     const doc = new jsPDF();
     doc.setFontSize(14);
     doc.text('Resumen de Deuda', 10, 10);
-    doc.text(
-      `Suscriptor: ${
-        this.subscribers.find((s) => s.id === this.selectedSubscriberId)
-          ?.name
-      }`,
-      10,
-      20
-    );
-    doc.text(`Paquete: ${this.selectedPackage?.name}`, 10, 30);
-    doc.text(`Precio base: $${this.selectedPackage?.price}`, 10, 40);
+    doc.text(`Suscriptor: ${ this.subscribers.find(s => s.id === this.selectedSubscriberId)?.name }`, 10, 20);
+    doc.text(`Paquete: ${ this.selectedPackage?.name }`, 10, 30);
+    doc.text(`Precio base: $${ this.selectedPackage?.price }`, 10, 40);
     doc.text('Promociones:', 10, 50);
     let y = 60;
     this.promotions
-      .filter((p) => this.selectedPromotions.includes(p.id))
-      .forEach((p) => {
+      .filter(p => this.selectedPromotions.includes(p.id))
+      .forEach(p => {
         doc.text(`- ${p.description}`, 12, y);
         y += 8;
       });
-    doc.text(`Total a pagar: $${this.calculatedTotal}`, 10, y + 10);
+    doc.text(`Total a pagar: $${ this.calculatedTotal }`, 10, y + 10);
     doc.save('deuda-suscriptor.pdf');
+  }
+
+  private resetAll() {
+    this.selectedPackageId = null;
+    this.selectedPackage = null;
+    this.promotions = [];
+    this.selectedPromotions = [];
+    this.calculatedTotal = null;
+    this.monthlyPayments = [];
+    this.fourthMonthPayment = null;
+    this.discountPercentage = 0;
   }
 }
