@@ -31,15 +31,14 @@ export class DetalleSuscriptorComponent implements OnInit  {
       delay(1000)
     )
     .subscribe(data=>{
+      console.log(data)
       this.usuarios=data
       this.isLoading=false
     })
   }
 
-  esPromocionVigente(fechaInicio:string, fechaFin:string){
-    const hoy=new Date();
-    const inicio=new Date(fechaInicio);
-    const fin= new Date(fechaFin);
-    return hoy>=inicio && hoy<= fin
+  esPromocionVigente(vigente:string){
+    const vigencia:string='Vigente'
+    return vigente===vigencia.toLocaleLowerCase()
   }
 }
