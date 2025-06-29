@@ -1,29 +1,29 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, of } from 'rxjs';
-import { suscriptor } from '../../suscriptor/interface/suscriptor-interface';
+import { reporteSuscriptor, suscriptor } from '../../suscriptor/interface/suscriptor-interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SuscriptoresService {
-  private apiUrl: string =  'assets/data/infoSuscriptores.json';
+  private apiUrl: string =  'http://localhost:5222/api/SuscriptorDatas';
+  //http://localhost:5222/api/SuscriptorDatas/reporte-suscriptor/1
 
 
   constructor(private http:HttpClient) { }
 
   public getSuscriptores():Observable<suscriptor[]>{
-    return this.http.get<suscriptor[]>(this.apiUrl)
+    return this.http.get<suscriptor[]>(`${this.apiUrl}/suscriptorInfo`)
     .pipe(
       catchError(()=>of([]))
     )
   }
 
-  searchSuscriptorById(id:number):Observable<suscriptor | null>{
-    return this.getSuscriptores()
+  searchSuscriptorById(id:number):Observable<reporteSuscriptor[] | null>{
+    return this.http.get<reporteSuscriptor[]>(`${this.apiUrl}/reporte-suscriptor/${id}`)
     .pipe(
-      map((suscriptores)=>suscriptores.find(s=>s.id===id)||null),
-      catchError(()=>of())
+      catchError(()=>of([]))
     )
   }
 }

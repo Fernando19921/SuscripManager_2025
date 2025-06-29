@@ -8,7 +8,7 @@
   <div class="card shadow p-4 rounded-4" style="max-width: 550px; width: 100%; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
 
     <!-- INICIO DEL CONTENIDO A EXPORTAR -->
-    <div #contenidoPDF style="padding: 10px;">
+    <div #contenidoPDF style="padding: 10px;" *ngFor="let suscriptor of suscriptorSeleccionado">
 
       <!-- Encabezado -->
       <div class="text-center mb-3">
@@ -20,14 +20,14 @@
 
       <!-- Nombre -->
       <div class="mb-4 text-center">
-        <h4 class="fw-bold text-primary mb-0">{{ suscriptorSeleccionado.nombre }}</h4>
+        <h4 class="fw-bold text-primary mb-0">{{ suscriptor.nombre }}</h4>
       </div>
 
       <!-- Información general -->
       <div class="mb-3" style="line-height: 1.6; font-size: 15px;">
-        <p><strong>Correo electrónico:</strong> {{ suscriptorSeleccionado.correo }}</p>
-        <p><strong>Colonia:</strong> {{ suscriptorSeleccionado.colonia }}</p>
-        <p><strong>Paquete contratado:</strong> {{ suscriptorSeleccionado.paqueteActivo }}</p>
+        <p><strong>Correo electrónico:</strong> {{ suscriptor.correo }}</p>
+        <p><strong>Colonia:</strong> {{ suscriptor.colonia }}</p>
+        <p><strong>Paquete contratado:</strong> {{ suscriptor.nombre_paquete }}</p>
       </div>
 
       <hr />
@@ -36,21 +36,21 @@
       <div class="mb-3">
         <p class="fw-semibold mb-1">Servicios incluidos:</p>
         <ul class="mb-0 ps-3">
-          <li *ngFor="let s of suscriptorSeleccionado.servicios">{{ s }}</li>
+          <li *ngFor="let servicio of suscriptor.servicios">{{ servicio }}</li>
         </ul>
       </div>
 
       <!-- Promoción -->
       <div class="mb-3">
         <p class="fw-semibold mb-1">Promoción aplicada:</p>
-        <p class="mb-2">{{ suscriptorSeleccionado.promociones || 'Ninguna' }}</p>
+        <p class="mb-2">{{ suscriptor.descripcion || 'Ninguna' }}</p>
 
-        <ng-container *ngIf="suscriptorSeleccionado.promociones && suscriptorSeleccionado.promociones.length > 0; else sinPromociones">
-          <div *ngIf="esPromocionVigente(suscriptorSeleccionado.fechaInicioPromocion, suscriptorSeleccionado.fechaFinPromocion)">
+        <ng-container *ngIf="suscriptor.vigente && suscriptor.vigente.length>0; else sinPromociones">
+          <div *ngIf="esPromocionVigente(suscriptor.vigente.toLocaleLowerCase())">
             <span class="fw-semibold">Estado de Promoción:</span>
             <span class="badge bg-success">Activa</span>
           </div>
-          <div *ngIf="!esPromocionVigente(suscriptorSeleccionado.fechaInicioPromocion, suscriptorSeleccionado.fechaFinPromocion)">
+          <div *ngIf="!esPromocionVigente(suscriptor.vigente.toLocaleLowerCase())">
             <span class="fw-semibold">Estado de Promoción:</span>
             <span class="badge bg-danger">Inactiva</span>
           </div>
@@ -63,12 +63,13 @@
 
       <!-- Precios -->
       <div class="mb-3" style="line-height: 1.6; font-size: 15px;">
-        <p><strong>Precio base:</strong> ${{ suscriptorSeleccionado.precioBase }}</p>
-        <p><strong>Precio con promoción:</strong> ${{ suscriptorSeleccionado.precioConPromocion }}</p>
+        <p><strong>Precio base:</strong> ${{ suscriptor.precio }}</p>
+        <p><strong>Precio con promoción:</strong> ${{ suscriptor.conDescuento }}</p>
       </div>
 
       <hr style="border: 1px solid #ccc;" />
       <p class="text-end text-muted" style="font-size: 12px;">Generado por SuscripManager</p>
+
     </div>
     <!-- FIN DEL CONTENIDO A EXPORTAR -->
 

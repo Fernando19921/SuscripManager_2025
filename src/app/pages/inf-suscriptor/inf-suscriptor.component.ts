@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { SuscriptoresService } from '../../core/services/suscriptores.service';
-import { suscriptor } from '../../suscriptor/interface/suscriptor-interface';
+import { reporteSuscriptor, suscriptor } from '../../suscriptor/interface/suscriptor-interface';
 import { delay, switchMap } from 'rxjs';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 
@@ -24,7 +24,7 @@ import { LoadingSpinnerComponent } from '../../core/loading-spinner/loading-spin
   styleUrls: ['./inf-suscriptor.component.css']
 })
 export class InfSuscriptorComponent implements OnInit {
-  public suscriptorSeleccionado!: suscriptor | null;
+  public suscriptorSeleccionado!:reporteSuscriptor[];
   public isLoading:boolean=false;
 
   // Elemento que contiene todo lo que se exportará al PDF
@@ -51,7 +51,8 @@ export class InfSuscriptorComponent implements OnInit {
           this.router.navigateByUrl('');
           return;
         }
-        this.suscriptorSeleccionado = data;
+        this.suscriptorSeleccionado=data
+        console.log(this.suscriptorSeleccionado)
         this.isLoading=false;
       });
   }
@@ -72,15 +73,13 @@ export class InfSuscriptorComponent implements OnInit {
   img.onload = () => {
     const imgHeight = (img.height * pdfWidth) / img.width;
     pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, imgHeight);
-    pdf.save(`suscriptor_${this.suscriptorSeleccionado?.nombre}.pdf`);
+    pdf.save(`suscriptor_${this.suscriptorSeleccionado[0]?.nombre}.pdf`);
   };
 }
 
-  esPromocionVigente(fechaInicio:string, fechaFin:string){
-    const hoy=new Date();
-    const inicio=new Date(fechaInicio);
-    const fin= new Date(fechaFin);
-    return hoy>=inicio && hoy<= fin
+   esPromocionVigente(vigente:string){
+    const vigencia:string='Activa'
+    return vigente===vigencia.toLocaleLowerCase()
   }
 
 }
