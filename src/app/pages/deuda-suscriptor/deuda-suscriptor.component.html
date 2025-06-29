@@ -2,41 +2,31 @@
   <mat-card-header>
     <mat-card-title>Calculadora de Deuda</mat-card-title>
   </mat-card-header>
-
   <mat-card-content>
-    <!-- 1. Contenedor de selección en dos columnas -->
+    <!-- 1. Selección Suscriptor / Paquete -->
     <div class="form-grid">
-      <!-- Suscriptor -->
       <mat-form-field appearance="fill" class="form-field">
         <mat-label>Selecciona Suscriptor</mat-label>
-        <mat-select [(ngModel)]="selectedSubscriberId" (selectionChange)="onSelectSubscriber()" panelClass="wide-select-panel">
+        <mat-select [(ngModel)]="selectedSubscriberId" (selectionChange)="onSelectSubscriber()">
           <mat-option [value]="null" disabled>Selecciona</mat-option>
-          <mat-option *ngFor="let sub of subscribers" [value]="sub.id">
-            {{ sub.name }}
-          </mat-option>
+          <mat-option *ngFor="let sub of subscribers" [value]="sub.id">{{ sub.name }}</mat-option>
         </mat-select>
       </mat-form-field>
 
-      <!-- Paquete -->
       <mat-form-field *ngIf="selectedSubscriberId" appearance="fill" class="form-field">
         <mat-label>Selecciona Paquete</mat-label>
-        <mat-select [(ngModel)]="selectedPackageId" (selectionChange)="onSelectPackage()" panelClass="wide-select-panel">
+        <mat-select [(ngModel)]="selectedPackageId" (selectionChange)="onSelectPackage()">
           <mat-option [value]="null" disabled>Selecciona</mat-option>
-          <mat-option *ngFor="let pkg of packages" [value]="pkg.id">
-            {{ pkg.name }}
-          </mat-option>
+          <mat-option *ngFor="let pkg of packages" [value]="pkg.id">{{ pkg.name }}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>
 
-    <!-- 2. Detalles del Paquete -->
+    <!-- 2. Detalles del paquete -->
     <div *ngIf="selectedPackage" class="package-details">
       <h3>Detalles del Paquete</h3>
-      <p><strong>Descripción:</strong> {{ selectedPackage.description }}</p>
+      <p><strong>{{ selectedPackage.description }}</strong></p>
       <p><strong>Precio:</strong> {{ selectedPackage.price | currency:'MXN':'symbol':'1.0-0' }}</p>
-      <ul>
-        <li *ngFor="let svc of selectedPackage.services">{{ svc }}</li>
-      </ul>
     </div>
 
     <!-- 3. Promociones -->
@@ -59,21 +49,60 @@
       </div>
     </div>
 
-    <!-- 4. Total -->
+    <!-- 4. Total general -->
     <div *ngIf="selectedPackage" class="total-container">
       <h3>Total a pagar</h3>
       <p class="total-amount">
-        {{ calculatedTotal !== null ? (calculatedTotal | currency:'MXN':'symbol':'1.0-0') : '---' }}
+        {{ calculatedTotal !== null 
+            ? (calculatedTotal | currency:'MXN':'symbol':'1.0-0') 
+            : '---' }}
       </p>
+    </div>
+
+    <!-- 5. Desglose en meses -->
+    <div *ngIf="calculatedTotal !== null" class="payments-grid">
+      <mat-card class="payment-card" *ngFor="let pay of monthlyPayments; let i = index">
+        <mat-card-header>
+          <mat-card-title>Mes {{ i + 1 }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          {{ pay | currency:'MXN':'symbol':'1.2-2' }}
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="payment-card">
+        <mat-card-header>
+          <mat-card-title>A partir del mes 4</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          {{ fourthMonthPayment | currency:'MXN':'symbol':'1.0-0' }}
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- 6. Servicios incluidos -->
+    <div *ngIf="selectedPackage" class="services-section">
+      <h3>Servicios incluidos</h3>
+      <mat-chip-list>
+        <mat-chip *ngFor="let svc of selectedPackage.services">{{ svc }}</mat-chip>
+      </mat-chip-list>
+    </div>
+
+    <!-- 7. Barra de ahorro -->
+    <div *ngIf="calculatedTotal !== null" class="savings-section">
+      <mat-progress-bar mode="determinate" [value]="discountPercentage"></mat-progress-bar>
+      <p class="save-text">{{ discountPercentage }}% de ahorro aplicado</p>
     </div>
   </mat-card-content>
 
-  <!-- 5. Botones de acción -->
+  <!-- 8. Botones de acción -->
   <mat-card-actions class="actions">
     <button mat-stroked-button (click)="calculateTotal()">Calcular</button>
-    <button mat-flat-button color="primary" (click)="exportToPDF()" [disabled]="calculatedTotal === null">
+    <button mat-flat-button color="primary"
+            (click)="exportToPDF()"
+            [disabled]="calculatedTotal === null">
       Exportar PDF
     </button>
   </mat-card-actions>
 </mat-card>
+
 

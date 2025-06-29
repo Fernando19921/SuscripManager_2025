@@ -1,13 +1,14 @@
 .deuda-container {
-  max-width: 600px;
+  max-width: 800px;
   margin: 0 auto;
+  padding: 16px;
 }
 
 .form-grid {
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 }
 
 .form-field {
@@ -15,17 +16,18 @@
 }
 
 .package-details {
-  margin-bottom: 16px;
+  margin-bottom: 24px;
 }
 
 .spinner-container {
   display: flex;
   justify-content: center;
-  padding: 16px;
+  padding: 16px 0;
 }
 
 .no-promos {
   font-style: italic;
+  color: rgba(0,0,0,0.6);
 }
 
 .total-container {
@@ -34,14 +36,47 @@
 }
 
 .total-amount {
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: bold;
-  color: #0b0b0c; /* Angular Material primary */
+  color: #1e88e5; /* primary color */
+}
+
+.payments-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.payment-card {
+  text-align: center;
+}
+
+.services-section {
+  margin-bottom: 24px;
+}
+
+.mat-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.savings-section {
+  margin-bottom: 16px;
+}
+
+.save-text {
+  text-align: right;
+  font-size: 0.9rem;
+  margin-top: 4px;
+  color: rgba(0,0,0,0.7);
 }
 
 .actions {
   display: flex;
   justify-content: flex-end;
   gap: 16px;
-  margin-top: 32px;
+  margin-top: 16px;
 }
+
