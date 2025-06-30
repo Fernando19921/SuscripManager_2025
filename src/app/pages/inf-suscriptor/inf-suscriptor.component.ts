@@ -24,10 +24,12 @@ import { LoadingSpinnerComponent } from '../../core/loading-spinner/loading-spin
   styleUrls: ['./inf-suscriptor.component.css']
 })
 export class InfSuscriptorComponent implements OnInit {
+  // Almacena el suscriptor seleccionado
   public suscriptorSeleccionado!:reporteSuscriptor[];
+  // Bandera para mostrar el spinner de carga
   public isLoading:boolean=false;
 
-  // Elemento que contiene todo lo que se exportará al PDF
+  // Referencia al elemento HTML que se exportará como PDF
   @ViewChild('contenidoPDF', { static: false }) contenidoPDF!: ElementRef;
 
   constructor(
@@ -37,17 +39,20 @@ export class InfSuscriptorComponent implements OnInit {
     private router: Router
   ) {}
 
+  // Se ejecuta al inicializar el componente
   ngOnInit(): void {
     this.isLoading=true
     this.activateRoute.params
       .pipe(
+        // Busca el suscriptor por ID recibido en la ruta
         switchMap(({ id }) =>
           this.suscriptoresService.searchSuscriptorById(Number(id))
         ),
-        delay(2000)
+        delay(2000) // Simula un retardo de 2 segundos
       )
       .subscribe((data) => {
         if (!data) {
+          // Si no se encuentra, redirige
           this.router.navigateByUrl('');
           return;
         }
@@ -57,28 +62,31 @@ export class InfSuscriptorComponent implements OnInit {
       });
   }
 
+  // Exporta el contenido referenciado a PDF
   async exportarPDF() {
-  if (!isPlatformBrowser(this.platformId)) return;
+    if (!isPlatformBrowser(this.platformId)) return;
 
-  const input = this.contenidoPDF.nativeElement;
-  const canvas = await html2canvas(input, { scale: 2 });
-  const imgData = canvas.toDataURL('image/png');
+    const input = this.contenidoPDF.nativeElement;
+    const canvas = await html2canvas(input, { scale: 2 });
+    const imgData = canvas.toDataURL('image/png');
 
-  const pdf = new jsPDF('p', 'mm', 'a4');
-  const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const pdfWidth = pdf.internal.pageSize.getWidth();
 
-  const img = new Image();
-  img.src = imgData;
+    const img = new Image();
+    img.src = imgData;
 
-  img.onload = () => {
-    const imgHeight = (img.height * pdfWidth) / img.width;
-    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, imgHeight);
-    pdf.save(`suscriptor_${this.suscriptorSeleccionado[0]?.nombre}.pdf`);
-  };
-}
+    img.onload = () => {
+      const imgHeight = (img.height * pdfWidth) / img.width;
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, imgHeight);
+      pdf.save(`suscriptor_${this.suscriptorSeleccionado[0]?.nombre}.pdf`);
+    };
+  }
 
-   esPromocionVigente(vigente:string){
+  // Verifica si la promoción está activa
+  esPromocionVigente(vigente:string){
     const vigencia:string='Activa'
+    // Compara el estado recibido con 'Activa' en minúsculas
     return vigente===vigencia.toLocaleLowerCase()
   }
 
