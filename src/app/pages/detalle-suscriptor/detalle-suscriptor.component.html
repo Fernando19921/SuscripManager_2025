@@ -1,6 +1,18 @@
 <div class="table-container position-relative">
 
-  <h4 class="mb-3">Lista de Suscriptores</h4>
+  <!-- Título y buscador en una sola fila -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="mb-0">Lista de Suscriptores</h4>
+    <div style="min-width: 300px;">
+      <core-search-input
+      class="w-100"
+      style="height: 48px;"
+      (onDebounce)="search($event)"
+      placeHolder="Buscar Suscriptor"
+      >
+    </core-search-input>
+    </div>
+  </div>
 
   <!-- Spinner centrado sobre la tabla mientras carga -->
   <div *ngIf="isLoading" class="d-flex justify-content-center align-items-center position-absolute w-100 h-100" style="background-color: rgba(255,255,255,0.7); top: 0; left: 0; z-index: 10;">
@@ -16,8 +28,6 @@
         <th>Paquete Activo</th>
         <th>Promocion Aplicada</th>
         <th>Estado</th>
-
-
         <th></th>
       </tr>
     </thead>
@@ -25,14 +35,11 @@
       <tr *ngFor="let user of usuarios; let i = index">
         <td>{{ i + 1 }}</td>
         <td>{{ user.nombre }}</td>
-        <td>{{ user.paquete}}</td>
+        <td>{{ user.paquete }}</td>
         <td>{{ user.promocion }}</td>
         <td>
-
-            <span *ngIf="esPromocionVigente(user.vigente.toLocaleLowerCase())" class="badge bg-success"> Promocion Vigente</span>
-            <span *ngIf="!esPromocionVigente(user.vigente.toLocaleLowerCase())" class="badge bg-danger"> Promocion Expirada</span>
-
-
+          <span *ngIf="esPromocionVigente(user.vigente.toLocaleLowerCase())" class="badge bg-success">Promocion Vigente</span>
+          <span *ngIf="!esPromocionVigente(user.vigente.toLocaleLowerCase())" class="badge bg-danger">Promocion Expirada</span>
           <ng-template #sinPromo>
             <span class="badge bg-secondary">Sin Promoción Activa</span>
           </ng-template>
