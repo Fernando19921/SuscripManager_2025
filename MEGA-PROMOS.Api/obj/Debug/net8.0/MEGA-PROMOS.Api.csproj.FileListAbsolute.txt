@@ -281,3 +281,4 @@ C:\Users\migue\Desktop\MEGA-PROMOS\MEGA-PROMOS.Api\MEGA-PROMOS.Api\bin\Debug\net
 C:\Users\migue\Desktop\MEGA-PROMOS\MEGA-PROMOS.Api\MEGA-PROMOS.Api\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
 C:\Users\migue\Desktop\MEGA-PROMOS\MEGA-PROMOS.Api\MEGA-PROMOS.Api\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
 C:\Users\migue\Desktop\MEGA-PROMOS\MEGA-PROMOS.Api\MEGA-PROMOS.Api\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\migue\Desktop\MEGA-PROMOS\MEGA-PROMOS.Api\MEGA-PROMOS.Api\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
