@@ -70,7 +70,7 @@
 
     <!-- 5. Total general y pagos -->
     <div *ngIf="selectedPackage" class="total-container">
-      <h3>Total a pagar</h3>
+      <h3>Total a pagar con meses en promoción</h3>
       <p class="total-amount">
         {{ calculatedTotal !== null
            ? (calculatedTotal | currency:'MXN':'symbol':'1.0-0')
@@ -80,17 +80,20 @@
 
     <!-- 6. Desglose en meses con límite de promoción -->
     <div *ngIf="calculatedTotal !== null" class="payments-grid">
-      <mat-card class="payment-card" *ngFor="let pay of monthlyPayments; let i = index">
+      <mat-card class="payment-card" *ngFor="let pay of monthlyPayments">
         <mat-card-header>
-          <mat-card-title>Mes {{ i + 1 }}</mat-card-title>
+          <mat-card-title>{{ pay.month }}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          {{ pay | currency:'MXN':'symbol':'1.2-2' }}
+          {{ pay.amount | currency:'MXN':'symbol':'1.2-2' }}
         </mat-card-content>
       </mat-card>
-      <mat-card class="payment-card">
+
+      <mat-card class="payment-card" *ngIf="promotionMonths > 0">
         <mat-card-header>
-          <mat-card-title>A partir del mes {{ promotionMonths + 1 }}</mat-card-title>
+          <mat-card-title>
+            A partir de {{ nextMonthName }}
+          </mat-card-title>
         </mat-card-header>
         <mat-card-content>
           {{ postPromotionPayment | currency:'MXN':'symbol':'1.0-0' }}

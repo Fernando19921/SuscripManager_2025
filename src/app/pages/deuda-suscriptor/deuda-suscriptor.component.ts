@@ -33,6 +33,11 @@ interface Promotion {
   scope: 'package' | 'city' | 'colony' | 'service';
 }
 
+interface MonthlyPayment {
+  month: string;
+  amount: number;
+}
+
 @Component({
   selector: 'app-deuda-suscriptor',
   standalone: true,
@@ -55,21 +60,30 @@ export class DeudaSuscriptorComponent implements OnInit {
   packages: Package[] = [];
   promotions: Promotion[] = [];
 
+  // Promociones aplicadas
+  appliedPromotions: Promotion[] = [];
+
   // Selecciones
   selectedSubscriberId: number | null = null;
   selectedPackageId: number | null = null;
   selectedPackage: Package | null = null;
 
-  // Promociones aplicadas
-  appliedPromotions: Promotion[] = [];
-
   // Totales y desglose
   calculatedTotal: number | null = null;
-  discountPercentage: number = 0;
+  discountPercentage = 0;
   promotionMonths = 0;
-  monthlyPayments: number[] = [];
+  monthlyPayments: MonthlyPayment[] = [];
   postPromotionPayment: number | null = null;
-  serviceShare: number = 0;
+  serviceShare = 0;
+
+  // Mes siguiente después de la promoción
+  public nextMonthName: string = '';
+
+  private monthNames = [
+    'Enero', 'Febrero', 'Marzo', 'Abril',
+    'Mayo', 'Junio', 'Julio', 'Agosto',
+    'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+  ];
 
   ngOnInit() {
     this.loadSubscribers();
@@ -102,7 +116,14 @@ export class DeudaSuscriptorComponent implements OnInit {
         services: ['Internet'],
         promotionMonths: 4
       },
-      // ...otros paquetes
+      {
+        id: 3,
+        name: 'Paquete Expirado',
+        description: 'Promoción ya expirada',
+        price: 299,
+        services: ['Internet', 'TV'],
+        promotionMonths: 0  // sin meses de promoción
+      }
     ];
   }
 
@@ -118,7 +139,14 @@ export class DeudaSuscriptorComponent implements OnInit {
 
   private loadPromotions() {
     if (!this.selectedPackage || !this.selectedSubscriberId) return;
-    // Simulación de promociones según paquete, ciudad, colonia o servicio
+
+    // Si promotionMonths es 0, la promo expiró
+    if (this.selectedPackage.promotionMonths === 0) {
+      this.promotions = [];
+      this.appliedPromotions = [];
+      return;
+    }
+
     this.promotions = [
       {
         id: 1,
@@ -136,9 +164,7 @@ export class DeudaSuscriptorComponent implements OnInit {
         autoApplied: false,
         scope: 'city'
       }
-      // ...más promociones
     ];
-    // Mantener solo las automáticas al inicio
     this.appliedPromotions = this.promotions.filter(p => p.autoApplied);
   }
 
@@ -148,31 +174,36 @@ export class DeudaSuscriptorComponent implements OnInit {
     const base = this.selectedPackage.price;
     let total = base;
 
-    // Aplica todas las promociones activas
     this.appliedPromotions.forEach(promo => {
       total -= promo.discountType === 'percentage'
         ? (promo.value / 100) * base
         : promo.value;
     });
 
-    // Total redondeado y no negativo
     this.calculatedTotal = Math.max(0, Math.round(total));
-
-    // Cálculo porcentaje ahorro
     this.discountPercentage = Math.round(((base - this.calculatedTotal) / base) * 100);
+    this.promotionMonths = Math.min(this.selectedPackage.promotionMonths, 12);
 
-    // Determina cuántos meses de promoción (máx. 6)
-    this.promotionMonths = Math.min(this.selectedPackage.promotionMonths, 6);
+    // Pago por mes de promoción
+    const share = this.promotionMonths > 0
+      ? +(this.calculatedTotal / this.promotionMonths).toFixed(2)
+      : 0;
 
-    // Calcula el pago mensual durante la promoción
-    const share = +(this.calculatedTotal / this.promotionMonths).toFixed(2);
-    this.monthlyPayments = Array(this.promotionMonths).fill(share);
+    // Generar array con nombre de mes + cantidad
+    const startMonthIndex = new Date().getMonth();
+    this.monthlyPayments = [];
+    for (let i = 0; i < this.promotionMonths; i++) {
+      const monthName = this.monthNames[(startMonthIndex + i) % 12];
+      this.monthlyPayments.push({ month: monthName, amount: share });
+    }
 
-    // Pago normal tras la promoción
+    // Nombre del mes que sigue después de la promo
+    this.nextMonthName = this.monthNames[(startMonthIndex + this.promotionMonths) % 12];
+
     this.postPromotionPayment = base;
-
-    // Desglose por servicio
-    this.serviceShare = +(share / this.selectedPackage.services.length).toFixed(2);
+    this.serviceShare = this.promotionMonths > 0
+      ? +(share / this.selectedPackage.services.length).toFixed(2)
+      : 0;
   }
 
   exportToPDF() {
@@ -180,16 +211,16 @@ export class DeudaSuscriptorComponent implements OnInit {
     const doc = new jsPDF();
     doc.setFontSize(14);
     doc.text('Resumen de Deuda', 10, 10);
-    doc.text(`Suscriptor: ${ this.subscribers.find(s => s.id === this.selectedSubscriberId)?.name }`, 10, 20);
-    doc.text(`Paquete: ${ this.selectedPackage?.name }`, 10, 30);
-    doc.text(`Precio base: $${ this.selectedPackage?.price }`, 10, 40);
+    doc.text(`Suscriptor: ${this.subscribers.find(s => s.id === this.selectedSubscriberId)?.name}`, 10, 20);
+    doc.text(`Paquete: ${this.selectedPackage?.name}`, 10, 30);
+    doc.text(`Precio base: $${this.selectedPackage?.price}`, 10, 40);
     doc.text('Promociones aplicadas:', 10, 50);
     let y = 60;
     this.appliedPromotions.forEach(p => {
       doc.text(`- ${p.description}`, 12, y);
       y += 8;
     });
-    doc.text(`Total a pagar: $${ this.calculatedTotal }`, 10, y + 10);
+    doc.text(`Total a pagar: $${this.calculatedTotal}`, 10, y + 10);
     doc.save('deuda-suscriptor.pdf');
   }
 
@@ -208,5 +239,6 @@ export class DeudaSuscriptorComponent implements OnInit {
     this.postPromotionPayment = null;
     this.promotionMonths = 0;
     this.serviceShare = 0;
+    this.nextMonthName = '';
   }
 }
