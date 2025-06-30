@@ -5,17 +5,18 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { LoadingSpinnerComponent } from '../../core/loading-spinner/loading-spinner.component';
 import { delay } from 'rxjs';
+import { SearchInputComponent } from '../../core/search-input/search-input.component';
 
 
 @Component({
   selector: 'app-detalle-suscriptor',
   standalone: true,
-  imports: [CommonModule,RouterModule,LoadingSpinnerComponent],
+  imports: [CommonModule,RouterModule,LoadingSpinnerComponent,SearchInputComponent],
   templateUrl: './detalle-suscriptor.component.html',
   styleUrl: './detalle-suscriptor.component.css'
 })
 export class DetalleSuscriptorComponent implements OnInit  {
-  public usuarios:suscriptor[]=[]
+  public usuarios:suscriptor[]=[];
   public isLoading: boolean=false;
   public date=new Date
   constructor(private SuscriptoresService:SuscriptoresService){}
@@ -34,6 +35,19 @@ export class DetalleSuscriptorComponent implements OnInit  {
       console.log(data)
       this.usuarios=data
       this.isLoading=false
+    })
+  }
+
+  search(term:string){
+    this.isLoading=true;
+    this.SuscriptoresService.searchByTerm(term)
+    .pipe(
+      delay(1000)
+    )
+    .subscribe(data=>{
+      this.usuarios=[];
+      this.isLoading=false;
+      this.usuarios=data
     })
   }
 

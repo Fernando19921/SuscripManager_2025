@@ -4,6 +4,10 @@ import { DeudaSuscriptorComponent } from './pages/deuda-suscriptor/deuda-suscrip
 import { InfSuscriptorComponent } from './pages/inf-suscriptor/inf-suscriptor.component';
 
 export const routes: Routes = [
+  { path:'',
+    redirectTo:'detalle-suscriptor',
+    pathMatch:'full'
+  },
   {
     path:'detalle-suscriptor',
     component:DetalleSuscriptorComponent,
