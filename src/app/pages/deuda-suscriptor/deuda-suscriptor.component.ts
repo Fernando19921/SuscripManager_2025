@@ -7,31 +7,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatChipsModule } from '@angular/material/chips';
-
-interface Subscriber {
-  id: number;
-  name: string;
-  city: string;
-  colonyId: number;
-}
-
-interface Package {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  services: string[];
-  promotionMonths: number;
-}
-
-interface Promotion {
-  id: number;
-  description: string;
-  discountType: 'percentage' | 'fixed';
-  value: number;
-  autoApplied: boolean;
-  scope: 'package' | 'city' | 'colony' | 'service';
-}
+import { PackageService, Package, Subscriber, Promotion } from '../../core/services/package.service';
 
 interface MonthlyPayment {
   month: string;
@@ -55,119 +31,78 @@ interface MonthlyPayment {
   styleUrls: ['./deuda-suscriptor.component.css'],
 })
 export class DeudaSuscriptorComponent implements OnInit {
-  // Datos simulados
+  // Datos obtenidos desde el servicio
   subscribers: Subscriber[] = [];
   packages: Package[] = [];
   promotions: Promotion[] = [];
-
-  // Promociones aplicadas
   appliedPromotions: Promotion[] = [];
 
-  // Selecciones
+  // Selecciones actuales
   selectedSubscriberId: number | null = null;
   selectedPackageId: number | null = null;
   selectedPackage: Package | null = null;
 
-  // Totales y desglose
+  // Resultados del cálculo de deuda
   calculatedTotal: number | null = null;
   discountPercentage = 0;
   promotionMonths = 0;
   monthlyPayments: MonthlyPayment[] = [];
   postPromotionPayment: number | null = null;
   serviceShare = 0;
+  nextMonthName: string = '';
 
-  // Mes siguiente después de la promoción
-  public nextMonthName: string = '';
-
+  // Nombres de meses para desglose mensual
   private monthNames = [
     'Enero', 'Febrero', 'Marzo', 'Abril',
     'Mayo', 'Junio', 'Julio', 'Agosto',
     'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
   ];
 
+  constructor(private packageService: PackageService) {}
+
   ngOnInit() {
     this.loadSubscribers();
     this.loadPackages();
   }
 
+  // Cargar suscriptores desde el servicio
   private loadSubscribers() {
-    this.subscribers = [
-      { id: 1, name: 'Juan Pérez', city: 'Ciudad MX', colonyId: 1 },
-      { id: 2, name: 'María López', city: 'Ciudad MX', colonyId: 2 },
-      // ...otros suscriptores
-    ];
+    this.packageService.getSubscribers().subscribe({
+      next: (data: Subscriber[]) => this.subscribers = data,
+      error: (err: unknown) => console.error('Error al cargar suscriptores:', err)
+    });
   }
 
+  // Cargar paquetes desde el servicio
   private loadPackages() {
-    this.packages = [
-      {
-        id: 1,
-        name: 'Básico TV',
-        description: 'Paquete básico de televisión',
-        price: 199.99,
-        services: ['Televisión'],
-        promotionMonths: 3
-      },
-      {
-        id: 2,
-        name: 'Internet 100Mbps',
-        description: 'Internet de 100 megas',
-        price: 349,
-        services: ['Internet'],
-        promotionMonths: 4
-      },
-      {
-        id: 3,
-        name: 'Paquete Expirado',
-        description: 'Promoción ya expirada',
-        price: 299,
-        services: ['Internet', 'TV'],
-        promotionMonths: 0  // sin meses de promoción
-      }
-    ];
+    this.packageService.getPackages().subscribe({
+      next: (data: Package[]) => this.packages = data,
+      error: (err: unknown) => console.error('Error al cargar paquetes:', err)
+    });
   }
 
+  // Cambiar de suscriptor limpia las selecciones
   onSelectSubscriber() {
     this.resetAll();
   }
 
+  // Al seleccionar paquete, cargar promociones desde API
   onSelectPackage() {
     this.selectedPackage = this.packages.find(p => p.id === this.selectedPackageId) ?? null;
     this.resetTotals();
-    this.loadPromotions();
-  }
 
-  private loadPromotions() {
-    if (!this.selectedPackage || !this.selectedSubscriberId) return;
-
-    // Si promotionMonths es 0, la promo expiró
-    if (this.selectedPackage.promotionMonths === 0) {
-      this.promotions = [];
-      this.appliedPromotions = [];
-      return;
+    if (this.selectedPackage && this.selectedSubscriberId) {
+      this.packageService.getPromotions(this.selectedPackage.id, this.selectedSubscriberId).subscribe({
+        next: (promos: Promotion[]) => {
+          this.promotions = promos;
+          this.appliedPromotions = promos.filter(p => p.autoApplied);
+        },
+        error: (err: unknown) => console.error('Error al cargar promociones:', err)
+      });
     }
-
-    this.promotions = [
-      {
-        id: 1,
-        description: '10% por ser nuevo suscriptor',
-        discountType: 'percentage',
-        value: 10,
-        autoApplied: true,
-        scope: 'package'
-      },
-      {
-        id: 3,
-        description: '20% estudiantes',
-        discountType: 'percentage',
-        value: 20,
-        autoApplied: false,
-        scope: 'city'
-      }
-    ];
-    this.appliedPromotions = this.promotions.filter(p => p.autoApplied);
   }
 
+  // Calcular el total a pagar, aplicar promociones y dividir en meses
   calculateTotal() {
     if (!this.selectedPackage) return;
 
@@ -184,12 +119,11 @@ export class DeudaSuscriptorComponent implements OnInit {
     this.discountPercentage = Math.round(((base - this.calculatedTotal) / base) * 100);
     this.promotionMonths = Math.min(this.selectedPackage.promotionMonths, 12);
 
-    // Pago por mes de promoción
     const share = this.promotionMonths > 0
       ? +(this.calculatedTotal / this.promotionMonths).toFixed(2)
       : 0;
 
-    // Generar array con nombre de mes + cantidad
+    // Generar lista de pagos mensuales con nombre del mes
     const startMonthIndex = new Date().getMonth();
     this.monthlyPayments = [];
     for (let i = 0; i < this.promotionMonths; i++) {
@@ -197,15 +131,14 @@ export class DeudaSuscriptorComponent implements OnInit {
       this.monthlyPayments.push({ month: monthName, amount: share });
     }
 
-    // Nombre del mes que sigue después de la promo
     this.nextMonthName = this.monthNames[(startMonthIndex + this.promotionMonths) % 12];
-
     this.postPromotionPayment = base;
     this.serviceShare = this.promotionMonths > 0
       ? +(share / this.selectedPackage.services.length).toFixed(2)
       : 0;
   }
 
+  // Generar PDF con resumen
   exportToPDF() {
     if (this.calculatedTotal === null) return;
     const doc = new jsPDF();
@@ -224,6 +157,7 @@ export class DeudaSuscriptorComponent implements OnInit {
     doc.save('deuda-suscriptor.pdf');
   }
 
+  // Limpiar selecciones cuando cambia suscriptor
   private resetAll() {
     this.selectedPackageId = null;
     this.selectedPackage = null;
@@ -232,6 +166,7 @@ export class DeudaSuscriptorComponent implements OnInit {
     this.resetTotals();
   }
 
+  // Reiniciar todos los totales calculados
   private resetTotals() {
     this.calculatedTotal = null;
     this.discountPercentage = 0;
