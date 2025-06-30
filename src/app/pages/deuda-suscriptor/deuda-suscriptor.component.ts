@@ -3,16 +3,16 @@ import jsPDF from 'jspdf';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
-import { MatSelectModule} from '@angular/material/select';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatChipsModule } from '@angular/material/chips';
 
 interface Subscriber {
   id: number;
   name: string;
+  city: string;
+  colonyId: number;
 }
 
 interface Package {
@@ -21,6 +21,7 @@ interface Package {
   description: string;
   price: number;
   services: string[];
+  promotionMonths: number;
 }
 
 interface Promotion {
@@ -29,6 +30,12 @@ interface Promotion {
   discountType: 'percentage' | 'fixed';
   value: number;
   autoApplied: boolean;
+  scope: 'package' | 'city' | 'colony' | 'service';
+}
+
+interface MonthlyPayment {
+  month: string;
+  amount: number;
 }
 
 @Component({
@@ -39,13 +46,11 @@ interface Promotion {
     FormsModule,
     MatCardModule,
     MatSelectModule,
-    MatCheckboxModule,
     MatButtonModule,
-    MatProgressSpinnerModule,
     MatProgressBarModule,
     MatChipsModule
   ],
-   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './deuda-suscriptor.component.html',
   styleUrls: ['./deuda-suscriptor.component.css'],
 })
@@ -55,25 +60,30 @@ export class DeudaSuscriptorComponent implements OnInit {
   packages: Package[] = [];
   promotions: Promotion[] = [];
 
-  // Estados de selección
+  // Promociones aplicadas
+  appliedPromotions: Promotion[] = [];
+
+  // Selecciones
   selectedSubscriberId: number | null = null;
   selectedPackageId: number | null = null;
-
-  // Objeto completo del paquete elegido
   selectedPackage: Package | null = null;
 
-  // Promociones aplicadas
-  selectedPromotions: number[] = [];
-
-  // Flags de carga / error
-  loadingPromos = false;
-  errorPromos: string | null = null;
-
-  // Totales y desglose mensual
+  // Totales y desglose
   calculatedTotal: number | null = null;
-  discountPercentage: number = 0;
-  monthlyPayments: number[] = [];
-  fourthMonthPayment: number | null = null;
+  discountPercentage = 0;
+  promotionMonths = 0;
+  monthlyPayments: MonthlyPayment[] = [];
+  postPromotionPayment: number | null = null;
+  serviceShare = 0;
+
+  // Mes siguiente después de la promoción
+  public nextMonthName: string = '';
+
+  private monthNames = [
+    'Enero', 'Febrero', 'Marzo', 'Abril',
+    'Mayo', 'Junio', 'Julio', 'Agosto',
+    'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+  ];
 
   ngOnInit() {
     this.loadSubscribers();
@@ -82,8 +92,9 @@ export class DeudaSuscriptorComponent implements OnInit {
 
   private loadSubscribers() {
     this.subscribers = [
-      { id: 1, name: 'Juan Pérez' },
-      { id: 2, name: 'María López' },
+      { id: 1, name: 'Juan Pérez', city: 'Ciudad MX', colonyId: 1 },
+      { id: 2, name: 'María López', city: 'Ciudad MX', colonyId: 2 },
+      // ...otros suscriptores
     ];
   }
 
@@ -91,18 +102,28 @@ export class DeudaSuscriptorComponent implements OnInit {
     this.packages = [
       {
         id: 1,
-        name: 'Paquete A',
-        description: 'Básico',
-        price: 199,
-        services: ['Internet 20MB', 'Llamadas locales'],
+        name: 'Básico TV',
+        description: 'Paquete básico de televisión',
+        price: 199.99,
+        services: ['Televisión'],
+        promotionMonths: 3
       },
       {
         id: 2,
-        name: 'Paquete B',
-        description: 'Avanzado',
+        name: 'Internet 100Mbps',
+        description: 'Internet de 100 megas',
         price: 349,
-        services: ['Internet 100MB', 'TV básica', 'Llamadas ilimitadas'],
+        services: ['Internet'],
+        promotionMonths: 4
       },
+      {
+        id: 3,
+        name: 'Paquete Expirado',
+        description: 'Promoción ya expirada',
+        price: 299,
+        services: ['Internet', 'TV'],
+        promotionMonths: 0  // sin meses de promoción
+      }
     ];
   }
 
@@ -112,53 +133,77 @@ export class DeudaSuscriptorComponent implements OnInit {
 
   onSelectPackage() {
     this.selectedPackage = this.packages.find(p => p.id === this.selectedPackageId) ?? null;
-    this.selectedPromotions = [];
-    this.calculatedTotal = null;
-    this.monthlyPayments = [];
-    this.fourthMonthPayment = null;
-    this.discountPercentage = 0;
+    this.resetTotals();
     this.loadPromotions();
   }
 
   private loadPromotions() {
-    if (!this.selectedPackage) return;
-    this.loadingPromos = true;
-    setTimeout(() => {
-      this.promotions = [
-        { id: 1, description: '10% por ser nuevo suscriptor', discountType: 'percentage', value: 10, autoApplied: true },
-        { id: 2, description: '20% por referido', discountType: 'fixed', value: 50, autoApplied: false }
-      ];
-      this.selectedPromotions = this.promotions.filter(p => p.autoApplied).map(p => p.id);
-      this.loadingPromos = false;
-    }, 800);
-  }
+    if (!this.selectedPackage || !this.selectedSubscriberId) return;
 
-  onTogglePromotion(promo: Promotion) {
-    const idx = this.selectedPromotions.indexOf(promo.id);
-    if (idx >= 0) this.selectedPromotions.splice(idx, 1);
-    else this.selectedPromotions.push(promo.id);
+    // Si promotionMonths es 0, la promo expiró
+    if (this.selectedPackage.promotionMonths === 0) {
+      this.promotions = [];
+      this.appliedPromotions = [];
+      return;
+    }
+
+    this.promotions = [
+      {
+        id: 1,
+        description: '10% por ser nuevo suscriptor',
+        discountType: 'percentage',
+        value: 10,
+        autoApplied: true,
+        scope: 'package'
+      },
+      {
+        id: 3,
+        description: '20% estudiantes',
+        discountType: 'percentage',
+        value: 20,
+        autoApplied: false,
+        scope: 'city'
+      }
+    ];
+    this.appliedPromotions = this.promotions.filter(p => p.autoApplied);
   }
 
   calculateTotal() {
-    if (!this.selectedPackage) {
-      this.calculatedTotal = null;
-      return;
-    }
+    if (!this.selectedPackage) return;
+
     const base = this.selectedPackage.price;
     let total = base;
-    for (const promo of this.promotions.filter(p => this.selectedPromotions.includes(p.id))) {
+
+    this.appliedPromotions.forEach(promo => {
       total -= promo.discountType === 'percentage'
         ? (promo.value / 100) * base
         : promo.value;
-    }
+    });
+
     this.calculatedTotal = Math.max(0, Math.round(total));
-    // porcentaje de ahorro
     this.discountPercentage = Math.round(((base - this.calculatedTotal) / base) * 100);
-    // pagos mensuales
-    const share = +(this.calculatedTotal / 3).toFixed(2);
-    this.monthlyPayments = [share, share, share];
-    // pago a partir del mes 4 (sin promoción)
-    this.fourthMonthPayment = base;
+    this.promotionMonths = Math.min(this.selectedPackage.promotionMonths, 12);
+
+    // Pago por mes de promoción
+    const share = this.promotionMonths > 0
+      ? +(this.calculatedTotal / this.promotionMonths).toFixed(2)
+      : 0;
+
+    // Generar array con nombre de mes + cantidad
+    const startMonthIndex = new Date().getMonth();
+    this.monthlyPayments = [];
+    for (let i = 0; i < this.promotionMonths; i++) {
+      const monthName = this.monthNames[(startMonthIndex + i) % 12];
+      this.monthlyPayments.push({ month: monthName, amount: share });
+    }
+
+    // Nombre del mes que sigue después de la promo
+    this.nextMonthName = this.monthNames[(startMonthIndex + this.promotionMonths) % 12];
+
+    this.postPromotionPayment = base;
+    this.serviceShare = this.promotionMonths > 0
+      ? +(share / this.selectedPackage.services.length).toFixed(2)
+      : 0;
   }
 
   exportToPDF() {
@@ -166,18 +211,16 @@ export class DeudaSuscriptorComponent implements OnInit {
     const doc = new jsPDF();
     doc.setFontSize(14);
     doc.text('Resumen de Deuda', 10, 10);
-    doc.text(`Suscriptor: ${ this.subscribers.find(s => s.id === this.selectedSubscriberId)?.name }`, 10, 20);
-    doc.text(`Paquete: ${ this.selectedPackage?.name }`, 10, 30);
-    doc.text(`Precio base: $${ this.selectedPackage?.price }`, 10, 40);
-    doc.text('Promociones:', 10, 50);
+    doc.text(`Suscriptor: ${this.subscribers.find(s => s.id === this.selectedSubscriberId)?.name}`, 10, 20);
+    doc.text(`Paquete: ${this.selectedPackage?.name}`, 10, 30);
+    doc.text(`Precio base: $${this.selectedPackage?.price}`, 10, 40);
+    doc.text('Promociones aplicadas:', 10, 50);
     let y = 60;
-    this.promotions
-      .filter(p => this.selectedPromotions.includes(p.id))
-      .forEach(p => {
-        doc.text(`- ${p.description}`, 12, y);
-        y += 8;
-      });
-    doc.text(`Total a pagar: $${ this.calculatedTotal }`, 10, y + 10);
+    this.appliedPromotions.forEach(p => {
+      doc.text(`- ${p.description}`, 12, y);
+      y += 8;
+    });
+    doc.text(`Total a pagar: $${this.calculatedTotal}`, 10, y + 10);
     doc.save('deuda-suscriptor.pdf');
   }
 
@@ -185,10 +228,17 @@ export class DeudaSuscriptorComponent implements OnInit {
     this.selectedPackageId = null;
     this.selectedPackage = null;
     this.promotions = [];
-    this.selectedPromotions = [];
+    this.appliedPromotions = [];
+    this.resetTotals();
+  }
+
+  private resetTotals() {
     this.calculatedTotal = null;
-    this.monthlyPayments = [];
-    this.fourthMonthPayment = null;
     this.discountPercentage = 0;
+    this.monthlyPayments = [];
+    this.postPromotionPayment = null;
+    this.promotionMonths = 0;
+    this.serviceShare = 0;
+    this.nextMonthName = '';
   }
 }

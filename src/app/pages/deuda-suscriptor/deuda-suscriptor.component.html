@@ -2,6 +2,7 @@
   <mat-card-header>
     <mat-card-title>Calculadora de Deuda</mat-card-title>
   </mat-card-header>
+
   <mat-card-content>
     <!-- 1. Selección Suscriptor / Paquete -->
     <div class="form-grid">
@@ -27,82 +28,85 @@
       <h3>Detalles del Paquete</h3>
       <p><strong>{{ selectedPackage.description }}</strong></p>
       <p><strong>Precio:</strong> {{ selectedPackage.price | currency:'MXN':'symbol':'1.0-0' }}</p>
+
+      <!-- Servicios con chips -->
+      <h4>Servicios incluidos</h4>
+      <mat-chip-list>
+        <mat-chip *ngFor="let svc of selectedPackage.services" selectable="false" removable="false">
+          {{ svc }}: {{ serviceShare | currency:'MXN':'symbol':'1.2-2' }} / mes
+        </mat-chip>
+      </mat-chip-list>
     </div>
 
     <!-- 3. Promociones -->
     <div *ngIf="selectedPackage">
-      <h3>Promociones</h3>
-      <div *ngIf="loadingPromos" class="spinner-container">
-        <mat-progress-spinner diameter="40" mode="indeterminate"></mat-progress-spinner>
-      </div>
-      <div *ngIf="!loadingPromos">
-        <mat-checkbox *ngFor="let promo of promotions"
-                      [checked]="selectedPromotions.includes(promo.id)"
-                      [disabled]="promo.autoApplied"
-                      (change)="onTogglePromotion(promo)">
-          {{ promo.description }}
-          <small>
+      <h3>Promociones Disponibles</h3>
+      <ul class="promo-list">
+        <li *ngFor="let promo of promotions" class="promo-item">
+          <button mat-stroked-button color="accent" disabled>
+            {{ promo.description }}
             ({{ promo.discountType === 'percentage' ? promo.value + '%' : ('$' + promo.value) }})
-          </small>
-        </mat-checkbox>
-        <p *ngIf="!promotions.length" class="no-promos">No hay promociones.</p>
-      </div>
+          </button>
+        </li>
+      </ul>
+
+      <h3>Promociones Aplicadas</h3>
+      <ul class="promo-list">
+        <li *ngFor="let promo of appliedPromotions" class="promo-item">
+          <button mat-flat-button color="primary">
+            {{ promo.description }}
+            ({{ promo.discountType === 'percentage' ? promo.value + '%' : ('$' + promo.value) }})
+          </button>
+        </li>
+        <li *ngIf="appliedPromotions.length === 0" class="no-promos">Ninguna promoción aplicada.</li>
+      </ul>
     </div>
 
-    <!-- 4. Total general -->
-    <div *ngIf="selectedPackage" class="total-container">
-      <h3>Total a pagar</h3>
-      <p class="total-amount">
-        {{ calculatedTotal !== null 
-            ? (calculatedTotal | currency:'MXN':'symbol':'1.0-0') 
-            : '---' }}
-      </p>
-    </div>
-
-    <!-- 5. Desglose en meses -->
-    <div *ngIf="calculatedTotal !== null" class="payments-grid">
-      <mat-card class="payment-card" *ngFor="let pay of monthlyPayments; let i = index">
-        <mat-card-header>
-          <mat-card-title>Mes {{ i + 1 }}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          {{ pay | currency:'MXN':'symbol':'1.2-2' }}
-        </mat-card-content>
-      </mat-card>
-      <mat-card class="payment-card">
-        <mat-card-header>
-          <mat-card-title>A partir del mes 4</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          {{ fourthMonthPayment | currency:'MXN':'symbol':'1.0-0' }}
-        </mat-card-content>
-      </mat-card>
-    </div>
-
-    <!-- 6. Servicios incluidos -->
-    <div *ngIf="selectedPackage" class="services-section">
-      <h3>Servicios incluidos</h3>
-      <mat-chip-list>
-        <mat-chip *ngFor="let svc of selectedPackage.services">{{ svc }}</mat-chip>
-      </mat-chip-list>
-    </div>
-
-    <!-- 7. Barra de ahorro -->
+    <!-- 4. Barra de ahorro -->
     <div *ngIf="calculatedTotal !== null" class="savings-section">
       <mat-progress-bar mode="determinate" [value]="discountPercentage"></mat-progress-bar>
       <p class="save-text">{{ discountPercentage }}% de ahorro aplicado</p>
     </div>
+
+    <!-- 5. Total general y pagos -->
+    <div *ngIf="selectedPackage" class="total-container">
+      <h3>Total a pagar con meses en promoción</h3>
+      <p class="total-amount">
+        {{ calculatedTotal !== null
+           ? (calculatedTotal | currency:'MXN':'symbol':'1.0-0')
+           : '---' }}
+      </p>
+    </div>
+
+    <!-- 6. Desglose en meses con límite de promoción -->
+    <div *ngIf="calculatedTotal !== null" class="payments-grid">
+      <mat-card class="payment-card" *ngFor="let pay of monthlyPayments">
+        <mat-card-header>
+          <mat-card-title>{{ pay.month }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          {{ pay.amount | currency:'MXN':'symbol':'1.2-2' }}
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="payment-card" *ngIf="promotionMonths > 0">
+        <mat-card-header>
+          <mat-card-title>
+            A partir de {{ nextMonthName }}
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          {{ postPromotionPayment | currency:'MXN':'symbol':'1.0-0' }}
+        </mat-card-content>
+      </mat-card>
+    </div>
   </mat-card-content>
 
-  <!-- 8. Botones de acción -->
+  <!-- 7. Botones de acción -->
   <mat-card-actions class="actions">
     <button mat-stroked-button (click)="calculateTotal()">Calcular</button>
-    <button mat-flat-button color="primary"
-            (click)="exportToPDF()"
-            [disabled]="calculatedTotal === null">
+    <button mat-flat-button color="primary" (click)="exportToPDF()" [disabled]="calculatedTotal === null">
       Exportar PDF
     </button>
   </mat-card-actions>
 </mat-card>
-
-
