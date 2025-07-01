@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatChipsModule } from '@angular/material/chips';
 import { PackageService, Package, Subscriber, Promotion } from '../../core/services/package.service';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 interface MonthlyPayment {
   month: string;
@@ -24,7 +25,8 @@ interface MonthlyPayment {
     MatSelectModule,
     MatButtonModule,
     MatProgressBarModule,
-    MatChipsModule
+    MatChipsModule,
+    MatFormFieldModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './deuda-suscriptor.component.html',
