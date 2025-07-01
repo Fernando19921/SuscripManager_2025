@@ -267,5 +267,85 @@ namespace MEGA_PROMOS.Api.Controllers
 
             return Ok(SuscResultados);
         }
+
+        //calculadora de deuda por id----
+        [HttpGet("reporte-suscriptor/{id}/deuda")]
+        public async Task<ActionResult<IEnumerable<object>>> GetDeudaPorId(int id)
+        {
+            var hoy = DateTime.Today;
+
+            var paquetes = await (
+                from sp in _context.suscriptores_x_paquete
+                join susc in _context.Suscriptor on sp.suscriptor_id equals susc.suscriptor_id
+                join col in _context.Colonias on susc.colonia_id equals col.colonia_id
+                join paq in _context.paquetes on sp.paquete_id equals paq.paquete_id
+                join pxp in _context.paquete_x_promocion on paq.paquete_id equals pxp.paquete_id into pxpJoin
+                from pxp in pxpJoin.DefaultIfEmpty()
+                join promo in _context.promociones on pxp.promocion_id equals promo.promocion_id into promoJoin
+                from promo in promoJoin
+                    .Where(p => p.fecha_inicio <= hoy && p.fecha_fin >= sp.fecha_inicio)
+                    .DefaultIfEmpty()
+                where susc.suscriptor_id == id
+                select new
+                {
+                    susc.nombre,
+                    Colonia = col.nombre,
+                    paq.paquete_id,
+                    PaqueteNombre = paq.nombre_paquete,
+                    paq.precio,
+                    Servicios = (from pxs in _context.paquete_x_servicios
+                                 join s in _context.servicios on pxs.servicio_id equals s.servicio_id
+                                 where pxs.paquete_id == paq.paquete_id
+                                 select s.nombre_servicio).ToList(),
+                    Promocion = promo,
+                    FechaInicioContrato = sp.fecha_inicio
+                }
+            ).ToListAsync();
+
+            if (!paquetes.Any())
+                return NotFound(new { mensaje = "No hay paquetes contratados por este suscriptor." });
+
+            var SuscResultados = new List<object>();
+
+            foreach (var p in paquetes)
+            {
+                var mensualidades = new List<object>();
+
+                for (int i = 1; i <= 5; i++)
+                {
+                    var fechaMes = p.FechaInicioContrato.AddMonths(i - 1);
+
+                    bool promoVigente = p.Promocion != null &&
+                                        fechaMes >= p.Promocion.fecha_inicio &&
+                                        fechaMes <= p.Promocion.fecha_fin;
+
+                    var precioConDescuento = promoVigente
+                        ? (p.Promocion.tipo_descuento == "porcentaje"
+                            ? p.precio - (p.precio * p.Promocion.descuento / 100)
+                            : p.precio - p.Promocion.descuento)
+                        : p.precio;
+
+                    mensualidades.Add(new
+                    {
+                        Mes = $"Mes {i} ({fechaMes:MMMM yyyy})",
+                        PrecioSinDescuento = p.precio,
+                        PrecioAplicado = precioConDescuento,
+                        EstadoPromocion = promoVigente ? "Activa" : "Promoción vencida"
+                    });
+                }
+
+                SuscResultados.Add(new
+                {
+                    p.nombre,
+                    p.Colonia,
+                    Paquete = p.PaqueteNombre,
+                    Servicios = p.Servicios,
+                    Promocion = p.Promocion?.nombre ?? "Sin promoción",
+                    mensualidades
+                });
+            }
+
+            return Ok(SuscResultados);
+        }
     }
 }

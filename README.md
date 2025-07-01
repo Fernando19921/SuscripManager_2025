@@ -30,6 +30,9 @@ PUT /api/[entity]/{id} – Actualizar un registro existente.
 
 DELETE /api/[entity]/{id} – Eliminar un registro.
 
+GET /api/SuscriptorDatas/reporte-suscriptor/{id}/deuda – Calcular deuda y
+detalles de promociones por suscriptor.
+
 ## Estructura del proyecto
 Controllers/ – Contiene los controladores con la lógica de cada endpoint.
 
