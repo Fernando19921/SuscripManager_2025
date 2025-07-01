@@ -1,0 +1,1076 @@
+[
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.ColoniasMasterController",
+    "Method": "GetColonias",
+    "RelativePath": "api/ColoniasMaster",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[MEGA_PROMOS.Api.ColoniasModel.Colonias, MEGA-PROMOS.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.ColoniasMasterController",
+    "Method": "PostColonias",
+    "RelativePath": "api/ColoniasMaster",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "colonias",
+        "Type": "MEGA_PROMOS.Api.ColoniasModel.Colonias",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "MEGA_PROMOS.Api.ColoniasModel.Colonias",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.ColoniasMasterController",
+    "Method": "GetColonias",
+    "RelativePath": "api/ColoniasMaster/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "MEGA_PROMOS.Api.ColoniasModel.Colonias",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.ColoniasMasterController",
+    "Method": "PutColonias",
+    "RelativePath": "api/ColoniasMaster/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "colonias",
+        "Type": "MEGA_PROMOS.Api.ColoniasModel.Colonias",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.ColoniasMasterController",
+    "Method": "DeleteColonias",
+    "RelativePath": "api/ColoniasMaster/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.PaquetesDatasController",
+    "Method": "Getpaquetes",
+    "RelativePath": "api/PaquetesDatas",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[MEGA_PROMOS.Api.PaquetesModel.PaquetesData, MEGA-PROMOS.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.PaquetesDatasController",
+    "Method": "PostPaquetesData",
+    "RelativePath": "api/PaquetesDatas",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "paquetesData",
+        "Type": "MEGA_PROMOS.Api.PaquetesModel.PaquetesData",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "MEGA_PROMOS.Api.PaquetesModel.PaquetesData",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.PaquetesDatasController",
+    "Method": "GetPaquetesData",
+    "RelativePath": "api/PaquetesDatas/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "MEGA_PROMOS.Api.PaquetesModel.PaquetesData",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.PaquetesDatasController",
+    "Method": "PutPaquetesData",
+    "RelativePath": "api/PaquetesDatas/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "paquetesData",
+        "Type": "MEGA_PROMOS.Api.PaquetesModel.PaquetesData",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.PaquetesDatasController",
+    "Method": "DeletePaquetesData",
+    "RelativePath": "api/PaquetesDatas/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.PaqXPromoDatasController",
+    "Method": "Getpaquete_x_promocion",
+    "RelativePath": "api/PaqXPromoDatas",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[MEGA_PROMOS.Api.PaqXPromo.PaqXPromoData, MEGA-PROMOS.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.PaqXPromoDatasController",
+    "Method": "PostPaqXPromoData",
+    "RelativePath": "api/PaqXPromoDatas",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "paqXPromoData",
+        "Type": "MEGA_PROMOS.Api.PaqXPromo.PaqXPromoData",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "MEGA_PROMOS.Api.PaqXPromo.PaqXPromoData",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.PaqXPromoDatasController",
+    "Method": "GetPaqXPromoData",
+    "RelativePath": "api/PaqXPromoDatas/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "MEGA_PROMOS.Api.PaqXPromo.PaqXPromoData",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.PaqXPromoDatasController",
+    "Method": "PutPaqXPromoData",
+    "RelativePath": "api/PaqXPromoDatas/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "paqXPromoData",
+        "Type": "MEGA_PROMOS.Api.PaqXPromo.PaqXPromoData",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.PaqXPromoDatasController",
+    "Method": "DeletePaqXPromoData",
+    "RelativePath": "api/PaqXPromoDatas/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.PaqXServDatasController",
+    "Method": "Getpaquete_x_servicios",
+    "RelativePath": "api/PaqXServDatas",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[MEGA_PROMOS.Api.PaqXServ.PaqXServData, MEGA-PROMOS.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.PaqXServDatasController",
+    "Method": "PostPaqXServData",
+    "RelativePath": "api/PaqXServDatas",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "paqXServData",
+        "Type": "MEGA_PROMOS.Api.PaqXServ.PaqXServData",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "MEGA_PROMOS.Api.PaqXServ.PaqXServData",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.PaqXServDatasController",
+    "Method": "GetPaqXServData",
+    "RelativePath": "api/PaqXServDatas/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "MEGA_PROMOS.Api.PaqXServ.PaqXServData",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.PaqXServDatasController",
+    "Method": "PutPaqXServData",
+    "RelativePath": "api/PaqXServDatas/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "paqXServData",
+        "Type": "MEGA_PROMOS.Api.PaqXServ.PaqXServData",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.PaqXServDatasController",
+    "Method": "DeletePaqXServData",
+    "RelativePath": "api/PaqXServDatas/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.PromocionesDatasController",
+    "Method": "Getpromociones",
+    "RelativePath": "api/PromocionesDatas",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[MEGA_PROMOS.Api.PromocionesModel.PromocionesData, MEGA-PROMOS.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.PromocionesDatasController",
+    "Method": "PostPromocionesData",
+    "RelativePath": "api/PromocionesDatas",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "promocionesData",
+        "Type": "MEGA_PROMOS.Api.PromocionesModel.PromocionesData",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "MEGA_PROMOS.Api.PromocionesModel.PromocionesData",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.PromocionesDatasController",
+    "Method": "GetPromocionesData",
+    "RelativePath": "api/PromocionesDatas/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "MEGA_PROMOS.Api.PromocionesModel.PromocionesData",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.PromocionesDatasController",
+    "Method": "PutPromocionesData",
+    "RelativePath": "api/PromocionesDatas/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "promocionesData",
+        "Type": "MEGA_PROMOS.Api.PromocionesModel.PromocionesData",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.PromocionesDatasController",
+    "Method": "DeletePromocionesData",
+    "RelativePath": "api/PromocionesDatas/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.PromocionesDatasController",
+    "Method": "GetPromocionesPorSuscriptor",
+    "RelativePath": "api/PromocionesDatas/por-suscriptor/{suscriptorId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "suscriptorId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[System.Object, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.PromoXSuscDatasController",
+    "Method": "Getpromociones_x_suscriptor",
+    "RelativePath": "api/PromoXSuscDatas",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[MEGA_PROMOS.Api.PromoXSusc.PromoXSuscData, MEGA-PROMOS.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.PromoXSuscDatasController",
+    "Method": "PostPromoXSuscData",
+    "RelativePath": "api/PromoXSuscDatas",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "promoXSuscData",
+        "Type": "MEGA_PROMOS.Api.PromoXSusc.PromoXSuscData",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "MEGA_PROMOS.Api.PromoXSusc.PromoXSuscData",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.PromoXSuscDatasController",
+    "Method": "GetPromoXSuscData",
+    "RelativePath": "api/PromoXSuscDatas/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "MEGA_PROMOS.Api.PromoXSusc.PromoXSuscData",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.PromoXSuscDatasController",
+    "Method": "PutPromoXSuscData",
+    "RelativePath": "api/PromoXSuscDatas/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "promoXSuscData",
+        "Type": "MEGA_PROMOS.Api.PromoXSusc.PromoXSuscData",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.PromoXSuscDatasController",
+    "Method": "DeletePromoXSuscData",
+    "RelativePath": "api/PromoXSuscDatas/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.ServiciosDatasController",
+    "Method": "Getservicios",
+    "RelativePath": "api/ServiciosDatas",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[MEGA_PROMOS.Api.ServiciosModel.ServiciosData, MEGA-PROMOS.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.ServiciosDatasController",
+    "Method": "PostServiciosData",
+    "RelativePath": "api/ServiciosDatas",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "serviciosData",
+        "Type": "MEGA_PROMOS.Api.ServiciosModel.ServiciosData",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "MEGA_PROMOS.Api.ServiciosModel.ServiciosData",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.ServiciosDatasController",
+    "Method": "GetServiciosData",
+    "RelativePath": "api/ServiciosDatas/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "MEGA_PROMOS.Api.ServiciosModel.ServiciosData",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.ServiciosDatasController",
+    "Method": "PutServiciosData",
+    "RelativePath": "api/ServiciosDatas/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "serviciosData",
+        "Type": "MEGA_PROMOS.Api.ServiciosModel.ServiciosData",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.ServiciosDatasController",
+    "Method": "DeleteServiciosData",
+    "RelativePath": "api/ServiciosDatas/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.SuscriptorDatasController",
+    "Method": "GetSuscriptor",
+    "RelativePath": "api/SuscriptorDatas",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[MEGA_PROMOS.Api.Model.SuscriptorData, MEGA-PROMOS.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.SuscriptorDatasController",
+    "Method": "PostSuscriptorData",
+    "RelativePath": "api/SuscriptorDatas",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "suscriptorData",
+        "Type": "MEGA_PROMOS.Api.Model.SuscriptorData",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "MEGA_PROMOS.Api.Model.SuscriptorData",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.SuscriptorDatasController",
+    "Method": "GetSuscriptorData",
+    "RelativePath": "api/SuscriptorDatas/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "MEGA_PROMOS.Api.Model.SuscriptorData",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.SuscriptorDatasController",
+    "Method": "PutSuscriptorData",
+    "RelativePath": "api/SuscriptorDatas/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "suscriptorData",
+        "Type": "MEGA_PROMOS.Api.Model.SuscriptorData",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.SuscriptorDatasController",
+    "Method": "DeleteSuscriptorData",
+    "RelativePath": "api/SuscriptorDatas/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.SuscriptorDatasController",
+    "Method": "GetPromocionesPorSuscriptor",
+    "RelativePath": "api/SuscriptorDatas/reporte-suscriptor/{suscriptorId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "suscriptorId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[System.Object, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.SuscriptorDatasController",
+    "Method": "GetPromocionesPorSuscriptor",
+    "RelativePath": "api/SuscriptorDatas/suscriptorInfo",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[System.Object, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.SuscXPaqDatasController",
+    "Method": "Getpromociones_x_suscriptor",
+    "RelativePath": "api/SuscXPaqDatas",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[MEGA_PROMOS.Api.SuscXPaq.SuscXPaqData, MEGA-PROMOS.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.SuscXPaqDatasController",
+    "Method": "PostSuscXPaqData",
+    "RelativePath": "api/SuscXPaqDatas",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "suscXPaqData",
+        "Type": "MEGA_PROMOS.Api.SuscXPaq.SuscXPaqData",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "MEGA_PROMOS.Api.SuscXPaq.SuscXPaqData",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.SuscXPaqDatasController",
+    "Method": "GetSuscXPaqData",
+    "RelativePath": "api/SuscXPaqDatas/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "MEGA_PROMOS.Api.SuscXPaq.SuscXPaqData",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.SuscXPaqDatasController",
+    "Method": "PutSuscXPaqData",
+    "RelativePath": "api/SuscXPaqDatas/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "suscXPaqData",
+        "Type": "MEGA_PROMOS.Api.SuscXPaq.SuscXPaqData",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.SuscXPaqDatasController",
+    "Method": "DeleteSuscXPaqData",
+    "RelativePath": "api/SuscXPaqDatas/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MEGA_PROMOS.Api.Controllers.WeatherForecastController",
+    "Method": "Get",
+    "RelativePath": "WeatherForecast",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[MEGA_PROMOS.Api.WeatherForecast, MEGA-PROMOS.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ],
+    "EndpointName": "GetWeatherForecast"
+  }
+]
