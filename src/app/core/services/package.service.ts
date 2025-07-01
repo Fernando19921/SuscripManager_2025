@@ -2,73 +2,47 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-// Interfaces compartidas entre servicio y componente
+// Modelo de suscriptor
 export interface Subscriber {
-  id: number;
-  name: string;
+  suscriptor_id: number;
+  nombre: string;
   city: string;
   colonyId: number;
 }
 
-export interface Package {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  services: string[];
-  promotionMonths: number;
-}
-
-export interface Promotion {
-  id: number;
-  description: string;
-  discountType: 'percentage' | 'fixed';
-  value: number;
-  autoApplied: boolean;
-  scope: 'package' | 'city' | 'colony' | 'service';
-}
-
+// Modelo de mensualidad
 export interface MonthlyDebt {
-  Mes: string;
-  PrecioSinDescuento: number;
-  PrecioAplicado: number;
-  EstadoPromocion: string;
+  mes: string;
+  precioSinDescuento: number;
+  precioAplicado: number;
+  estadoPromocion: string;
 }
 
+// Modelo de detalle de deuda
 export interface DebtDetail {
   nombre: string;
-  Colonia: string;
-  Paquete: string;
-  Servicios: string[];
-  Promocion: string;
+  colonia: string;
+  paquete: string;
+  servicios: string[];
+  promocion: string;
   mensualidades: MonthlyDebt[];
 }
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class PackageService {
-  // URL base de la API local
-  private apiBase = 'http://localhost:5222/api';
+  private apiBase = 'http://localhost:5222/api'; // Cambia si tu API está en otro puerto o ruta
 
   constructor(private http: HttpClient) {}
 
-  // Obtener paquetes disponibles desde API
-  getPackages(): Observable<Package[]> {
-    return this.http.get<Package[]>(`${this.apiBase}/PaquetesDatas`);
-  }
-
-  // Obtener suscriptores con detalle
+  // Obtiene todos los suscriptores
   getSubscribers(): Observable<Subscriber[]> {
     return this.http.get<Subscriber[]>(`${this.apiBase}/SuscriptorDatas/suscriptorInfo`);
   }
 
-  // Obtener reporte de un suscriptor
-  getSubscriberReport(id: number): Observable<DebtDetail[]> {
-    return this.http.get<DebtDetail[]>(`${this.apiBase}/SuscriptorDatas/reporte-suscriptor/${id}`);
-  }
-
-  // Obtener deuda calculada por suscriptor
+  // Obtiene la deuda de un suscriptor por su ID
   getDebtBySubscriber(id: number): Observable<DebtDetail[]> {
     return this.http.get<DebtDetail[]>(`${this.apiBase}/SuscriptorDatas/reporte-suscriptor/${id}/deuda`);
   }

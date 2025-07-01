@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MEGA-PROMOS.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9bf4e52af3b1c04adb62a513c8f79a0ae0ef7daf")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0019544b144779f3d20f687be8163130c250f8c7")]
 [assembly: System.Reflection.AssemblyProductAttribute("MEGA-PROMOS.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MEGA-PROMOS.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

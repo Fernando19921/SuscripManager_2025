@@ -4,84 +4,86 @@
   </mat-card-header>
 
   <mat-card-content>
-    <!-- 1. Selección Suscriptor / Paquete -->
     <div class="form-grid">
+      <!-- Selector de suscriptor -->
       <mat-form-field appearance="fill" class="form-field">
         <mat-label>Selecciona Suscriptor</mat-label>
-        <mat-select [(ngModel)]="selectedSubscriberId" (selectionChange)="onSelectSubscriber()">
-          <mat-option [value]="null" disabled>Selecciona</mat-option>
-          <mat-option *ngFor="let sub of subscribers" [value]="sub.id">{{ sub.name }}</mat-option>
+        <mat-select [(ngModel)]="selectedSubscriberId" (ngModelChange)="onSelectSubscriber()">
+          <mat-option disabled>Selecciona</mat-option>
+          <mat-option *ngFor="let sub of subscribers" [value]="+sub.suscriptor_id">
+            {{ sub.nombre }}
+          </mat-option>
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field *ngIf="selectedSubscriberId" appearance="fill" class="form-field">
+      <!-- Selector de paquete -->
+      <mat-form-field *ngIf="debtPackages.length > 0" appearance="fill" class="form-field">
         <mat-label>Selecciona Paquete</mat-label>
-        <mat-select [(ngModel)]="selectedPackageIndex" (selectionChange)="onSelectPackage()">
-          <mat-option [value]="null" disabled>Selecciona</mat-option>
-          <mat-option *ngFor="let pkg of debtPackages; let i = index" [value]="i">{{ pkg.Paquete }}</mat-option>
+        <mat-select [(ngModel)]="selectedPackageIndex" (ngModelChange)="onSelectPackage()">
+          <mat-option disabled>Selecciona</mat-option>
+          <mat-option *ngFor="let pkg of debtPackages; let i = index" [value]="i">
+            {{ pkg.paquete }}
+          </mat-option>
         </mat-select>
       </mat-form-field>
     </div>
 
-    <!-- 2. Detalles del paquete -->
+    <!-- Detalles del paquete -->
     <div *ngIf="selectedDebt" class="package-details">
       <h3>Detalles del Paquete</h3>
-      <p><strong>{{ selectedDebt.Paquete }}</strong></p>
-      <p><strong>Precio:</strong> {{ selectedDebt.mensualidades[0].PrecioSinDescuento | currency:'MXN':'symbol':'1.0-0' }}</p>
+      <p><strong>Nombre:</strong> {{ selectedDebt.nombre }}</p>
+      <p><strong>Colonia:</strong> {{ selectedDebt.colonia }}</p>
+      <p><strong>Paquete:</strong> {{ selectedDebt.paquete }}</p>
+      <p><strong>Promoción:</strong> {{ selectedDebt.promocion }}</p>
+      <p><strong>Precio base:</strong> {{ selectedDebt.mensualidades[0].precioSinDescuento | currency:'MXN' }}</p>
 
-      <!-- Servicios con chips -->
       <h4>Servicios incluidos</h4>
-      <mat-chip-list>
-        <mat-chip *ngFor="let svc of selectedDebt.Servicios" selectable="false" removable="false">
-          {{ svc }}: {{ serviceShare | currency:'MXN':'symbol':'1.2-2' }} / mes
-        </mat-chip>
-      </mat-chip-list>
+      <ul class="service-list">
+        <li *ngFor="let svc of selectedDebt.servicios">
+          {{ svc }}: {{ serviceShare | currency:'MXN' }} / mes
+        </li>
+      </ul>
     </div>
-    
 
-    <!-- 4. Barra de ahorro -->
+    <!-- Ahorro -->
     <div *ngIf="calculatedTotal !== null" class="savings-section">
       <mat-progress-bar mode="determinate" [value]="discountPercentage"></mat-progress-bar>
-      <p class="save-text">{{ discountPercentage }}% de ahorro aplicado</p>
+      <p>{{ discountPercentage }}% de ahorro aplicado</p>
     </div>
 
-    <!-- 5. Total general y pagos -->
-    <div *ngIf="selectedDebt" class="total-container">
-      <h3>Total a pagar con meses en promoción</h3>
-      <p class="total-amount">
-        {{ calculatedTotal !== null
-           ? (calculatedTotal | currency:'MXN':'symbol':'1.0-0')
-           : '---' }}
-      </p>
+    <!-- Total -->
+    <div *ngIf="selectedDebt">
+      <h3>Total a pagar</h3>
+      <p>{{ calculatedTotal | currency:'MXN' }}</p>
     </div>
 
-    <!-- 6. Desglose en meses con límite de promoción -->
+    <!-- Pagos mensuales -->
     <div *ngIf="calculatedTotal !== null" class="payments-grid">
-      <mat-card class="payment-card" *ngFor="let pay of monthlyPayments">
+      <mat-card *ngFor="let pay of monthlyPayments" class="payment-card">
         <mat-card-header>
           <mat-card-title>{{ pay.month }}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          {{ pay.amount | currency:'MXN':'symbol':'1.2-2' }}
+          {{ pay.amount | currency:'MXN' }}
         </mat-card-content>
       </mat-card>
 
-      <mat-card class="payment-card" *ngIf="promotionMonths > 0">
+      <!-- Mostrar "A partir de..." solo si hay promoción -->
+      <mat-card *ngIf="promotionMonths > 0 && discountPercentage > 0" class="payment-card">
         <mat-card-header>
-          <mat-card-title>
-            A partir de {{ nextMonthName }}
-          </mat-card-title>
+          <mat-card-title>A partir de {{ nextMonthName }}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          {{ postPromotionPayment | currency:'MXN':'symbol':'1.0-0' }}
+          {{ postPromotionPayment | currency:'MXN' }}
         </mat-card-content>
       </mat-card>
     </div>
   </mat-card-content>
 
-  <!-- 7. Botones de acción -->
-  <mat-card-actions class="actions">
-    <button mat-stroked-button (click)="calculateTotal()">Calcular</button>
+  <mat-card-actions>
+    <button mat-stroked-button (click)="calculateTotal()" [disabled]="calculatedTotal !== null">
+      Calcular
+    </button>
     <button mat-flat-button color="primary" (click)="exportToPDF()" [disabled]="calculatedTotal === null">
       Exportar PDF
     </button>
