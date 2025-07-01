@@ -7,7 +7,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatChipsModule } from '@angular/material/chips';
-import { PackageService, Package, Subscriber, Promotion } from '../../core/services/package.service';
+import { PackageService, DebtDetail, Subscriber } from '../../core/services/package.service';
 
 interface MonthlyPayment {
   month: string;
@@ -33,14 +33,12 @@ interface MonthlyPayment {
 export class DeudaSuscriptorComponent implements OnInit {
   // Datos obtenidos desde el servicio
   subscribers: Subscriber[] = [];
-  packages: Package[] = [];
-  promotions: Promotion[] = [];
-  appliedPromotions: Promotion[] = [];
+  debtPackages: DebtDetail[] = [];
 
   // Selecciones actuales
   selectedSubscriberId: number | null = null;
-  selectedPackageId: number | null = null;
-  selectedPackage: Package | null = null;
+  selectedPackageIndex: number | null = null;
+  selectedDebt: DebtDetail | null = null;
 
   // Resultados del cálculo de deuda
   calculatedTotal: number | null = null;
@@ -62,7 +60,6 @@ export class DeudaSuscriptorComponent implements OnInit {
 
   ngOnInit() {
     this.loadSubscribers();
-    this.loadPackages();
   }
 
   // Cargar suscriptores desde el servicio
@@ -73,69 +70,42 @@ export class DeudaSuscriptorComponent implements OnInit {
     });
   }
 
-  // Cargar paquetes desde el servicio
-  private loadPackages() {
-    this.packageService.getPackages().subscribe({
-      next: (data: Package[]) => this.packages = data,
-      error: (err: unknown) => console.error('Error al cargar paquetes:', err)
-    });
-  }
 
-  // Cambiar de suscriptor limpia las selecciones
+
+  // Cambiar de suscriptor: cargar paquetes con deuda
   onSelectSubscriber() {
     this.resetAll();
-  }
-
-  // Al seleccionar paquete, cargar promociones desde API
-  onSelectPackage() {
-    this.selectedPackage = this.packages.find(p => p.id === this.selectedPackageId) ?? null;
-    this.resetTotals();
-
-    if (this.selectedPackage && this.selectedSubscriberId) {
-      this.packageService.getPromotions(this.selectedPackage.id, this.selectedSubscriberId).subscribe({
-        next: (promos: Promotion[]) => {
-          this.promotions = promos;
-          this.appliedPromotions = promos.filter(p => p.autoApplied);
+    if (this.selectedSubscriberId) {
+      this.packageService.getDebtBySubscriber(this.selectedSubscriberId).subscribe({
+        next: (data: DebtDetail[]) => {
+          this.debtPackages = data;
         },
-        error: (err: unknown) => console.error('Error al cargar promociones:', err)
+        error: (err: unknown) => console.error('Error al cargar deuda:', err)
       });
     }
   }
 
-  // Calcular el total a pagar, aplicar promociones y dividir en meses
+  // Al seleccionar paquete se calculan los totales
+  onSelectPackage() {
+    this.selectedDebt = this.selectedPackageIndex !== null ? this.debtPackages[this.selectedPackageIndex] : null;
+    this.calculateTotal();
+  }
+
+  // Calcular el total a pagar basándose en la deuda recibida
   calculateTotal() {
-    if (!this.selectedPackage) return;
+    this.resetTotals();
+    if (!this.selectedDebt) return;
 
-    const base = this.selectedPackage.price;
-    let total = base;
-
-    this.appliedPromotions.forEach(promo => {
-      total -= promo.discountType === 'percentage'
-        ? (promo.value / 100) * base
-        : promo.value;
-    });
-
-    this.calculatedTotal = Math.max(0, Math.round(total));
-    this.discountPercentage = Math.round(((base - this.calculatedTotal) / base) * 100);
-    this.promotionMonths = Math.min(this.selectedPackage.promotionMonths, 12);
-
-    const share = this.promotionMonths > 0
-      ? +(this.calculatedTotal / this.promotionMonths).toFixed(2)
-      : 0;
-
-    // Generar lista de pagos mensuales con nombre del mes
+    const baseTotal = this.selectedDebt.mensualidades.reduce((a, m) => a + m.PrecioSinDescuento, 0);
+    const appliedTotal = this.selectedDebt.mensualidades.reduce((a, m) => a + m.PrecioAplicado, 0);
+    this.calculatedTotal = appliedTotal;
+    this.discountPercentage = Math.round(((baseTotal - appliedTotal) / baseTotal) * 100);
+    this.promotionMonths = this.selectedDebt.mensualidades.length;
+    this.monthlyPayments = this.selectedDebt.mensualidades.map(m => ({ month: m.Mes, amount: m.PrecioAplicado }));
     const startMonthIndex = new Date().getMonth();
-    this.monthlyPayments = [];
-    for (let i = 0; i < this.promotionMonths; i++) {
-      const monthName = this.monthNames[(startMonthIndex + i) % 12];
-      this.monthlyPayments.push({ month: monthName, amount: share });
-    }
-
     this.nextMonthName = this.monthNames[(startMonthIndex + this.promotionMonths) % 12];
-    this.postPromotionPayment = base;
-    this.serviceShare = this.promotionMonths > 0
-      ? +(share / this.selectedPackage.services.length).toFixed(2)
-      : 0;
+    this.postPromotionPayment = this.selectedDebt.mensualidades[0].PrecioSinDescuento;
+    this.serviceShare = this.selectedDebt.Servicios.length > 0 ? +(this.selectedDebt.mensualidades[0].PrecioAplicado / this.selectedDebt.Servicios.length).toFixed(2) : 0;
   }
 
   // Generar PDF con resumen
@@ -145,24 +115,17 @@ export class DeudaSuscriptorComponent implements OnInit {
     doc.setFontSize(14);
     doc.text('Resumen de Deuda', 10, 10);
     doc.text(`Suscriptor: ${this.subscribers.find(s => s.id === this.selectedSubscriberId)?.name}`, 10, 20);
-    doc.text(`Paquete: ${this.selectedPackage?.name}`, 10, 30);
-    doc.text(`Precio base: $${this.selectedPackage?.price}`, 10, 40);
-    doc.text('Promociones aplicadas:', 10, 50);
-    let y = 60;
-    this.appliedPromotions.forEach(p => {
-      doc.text(`- ${p.description}`, 12, y);
-      y += 8;
-    });
-    doc.text(`Total a pagar: $${this.calculatedTotal}`, 10, y + 10);
+    doc.text(`Paquete: ${this.selectedDebt?.Paquete}`, 10, 30);
+    doc.text(`Precio base: $${this.selectedDebt?.mensualidades[0].PrecioSinDescuento}`, 10, 40);
+    doc.text(`Total a pagar: $${this.calculatedTotal}`, 10, 50);
     doc.save('deuda-suscriptor.pdf');
   }
 
   // Limpiar selecciones cuando cambia suscriptor
   private resetAll() {
-    this.selectedPackageId = null;
-    this.selectedPackage = null;
-    this.promotions = [];
-    this.appliedPromotions = [];
+    this.selectedPackageIndex = null;
+    this.selectedDebt = null;
+    this.debtPackages = [];
     this.resetTotals();
   }
 

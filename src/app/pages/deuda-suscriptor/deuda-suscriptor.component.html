@@ -16,51 +16,28 @@
 
       <mat-form-field *ngIf="selectedSubscriberId" appearance="fill" class="form-field">
         <mat-label>Selecciona Paquete</mat-label>
-        <mat-select [(ngModel)]="selectedPackageId" (selectionChange)="onSelectPackage()">
+        <mat-select [(ngModel)]="selectedPackageIndex" (selectionChange)="onSelectPackage()">
           <mat-option [value]="null" disabled>Selecciona</mat-option>
-          <mat-option *ngFor="let pkg of packages" [value]="pkg.id">{{ pkg.name }}</mat-option>
+          <mat-option *ngFor="let pkg of debtPackages; let i = index" [value]="i">{{ pkg.Paquete }}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>
 
     <!-- 2. Detalles del paquete -->
-    <div *ngIf="selectedPackage" class="package-details">
+    <div *ngIf="selectedDebt" class="package-details">
       <h3>Detalles del Paquete</h3>
-      <p><strong>{{ selectedPackage.description }}</strong></p>
-      <p><strong>Precio:</strong> {{ selectedPackage.price | currency:'MXN':'symbol':'1.0-0' }}</p>
+      <p><strong>{{ selectedDebt.Paquete }}</strong></p>
+      <p><strong>Precio:</strong> {{ selectedDebt.mensualidades[0].PrecioSinDescuento | currency:'MXN':'symbol':'1.0-0' }}</p>
 
       <!-- Servicios con chips -->
       <h4>Servicios incluidos</h4>
       <mat-chip-list>
-        <mat-chip *ngFor="let svc of selectedPackage.services" selectable="false" removable="false">
+        <mat-chip *ngFor="let svc of selectedDebt.Servicios" selectable="false" removable="false">
           {{ svc }}: {{ serviceShare | currency:'MXN':'symbol':'1.2-2' }} / mes
         </mat-chip>
       </mat-chip-list>
     </div>
-
-    <!-- 3. Promociones -->
-    <div *ngIf="selectedPackage">
-      <h3>Promociones Disponibles</h3>
-      <ul class="promo-list">
-        <li *ngFor="let promo of promotions" class="promo-item">
-          <button mat-stroked-button color="accent" disabled>
-            {{ promo.description }}
-            ({{ promo.discountType === 'percentage' ? promo.value + '%' : ('$' + promo.value) }})
-          </button>
-        </li>
-      </ul>
-
-      <h3>Promociones Aplicadas</h3>
-      <ul class="promo-list">
-        <li *ngFor="let promo of appliedPromotions" class="promo-item">
-          <button mat-flat-button color="primary">
-            {{ promo.description }}
-            ({{ promo.discountType === 'percentage' ? promo.value + '%' : ('$' + promo.value) }})
-          </button>
-        </li>
-        <li *ngIf="appliedPromotions.length === 0" class="no-promos">Ninguna promoción aplicada.</li>
-      </ul>
-    </div>
+    
 
     <!-- 4. Barra de ahorro -->
     <div *ngIf="calculatedTotal !== null" class="savings-section">
@@ -69,7 +46,7 @@
     </div>
 
     <!-- 5. Total general y pagos -->
-    <div *ngIf="selectedPackage" class="total-container">
+    <div *ngIf="selectedDebt" class="total-container">
       <h3>Total a pagar con meses en promoción</h3>
       <p class="total-amount">
         {{ calculatedTotal !== null

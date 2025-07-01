@@ -28,29 +28,48 @@ export interface Promotion {
   scope: 'package' | 'city' | 'colony' | 'service';
 }
 
+export interface MonthlyDebt {
+  Mes: string;
+  PrecioSinDescuento: number;
+  PrecioAplicado: number;
+  EstadoPromocion: string;
+}
+
+export interface DebtDetail {
+  nombre: string;
+  Colonia: string;
+  Paquete: string;
+  Servicios: string[];
+  Promocion: string;
+  mensualidades: MonthlyDebt[];
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class PackageService {
-  // URLs base de la API (reemplazar)
-  private packagesUrl = 'https://tu-api.com/api/packages';
-  private subscribersUrl = 'https://tu-api.com/api/subscribers';
-  private promotionsUrl = 'https://tu-api.com/api/promotions';
+  // URL base de la API local
+  private apiBase = 'http://localhost:5222/api';
 
   constructor(private http: HttpClient) {}
 
   // Obtener paquetes disponibles desde API
   getPackages(): Observable<Package[]> {
-    return this.http.get<Package[]>(this.packagesUrl);
+    return this.http.get<Package[]>(`${this.apiBase}/PaquetesDatas`);
   }
 
-  // Obtener suscriptores desde API
+  // Obtener suscriptores con detalle
   getSubscribers(): Observable<Subscriber[]> {
-    return this.http.get<Subscriber[]>(this.subscribersUrl);
+    return this.http.get<Subscriber[]>(`${this.apiBase}/SuscriptorDatas/suscriptorInfo`);
   }
 
-  // Obtener promociones aplicables según suscriptor y paquete
-  getPromotions(packageId: number, subscriberId: number): Observable<Promotion[]> {
-    return this.http.get<Promotion[]>(`${this.promotionsUrl}?packageId=${packageId}&subscriberId=${subscriberId}`);
+  // Obtener reporte de un suscriptor
+  getSubscriberReport(id: number): Observable<DebtDetail[]> {
+    return this.http.get<DebtDetail[]>(`${this.apiBase}/SuscriptorDatas/reporte-suscriptor/${id}`);
+  }
+
+  // Obtener deuda calculada por suscriptor
+  getDebtBySubscriber(id: number): Observable<DebtDetail[]> {
+    return this.http.get<DebtDetail[]>(`${this.apiBase}/SuscriptorDatas/reporte-suscriptor/${id}/deuda`);
   }
 }
