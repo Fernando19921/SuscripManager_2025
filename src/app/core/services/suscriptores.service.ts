@@ -15,15 +15,34 @@ export class SuscriptoresService {
   constructor(private http:HttpClient) { }
 
   public getSuscriptores():Observable<suscriptor[]>{
-    return this.http.get<suscriptor[]>(`${this.apiUrl}/suscriptorInfo`)
+    return this.http.get<any[]>(`${this.apiUrl}/suscriptorInfo`)
     .pipe(
+      map(items => items.map(item => ({
+        id: item.suscriptor_id,
+        nombre: item.nombre,
+        paquete: item.paquete ?? item.Paquete,
+        promocion: item.promocion ?? item.Promocion,
+        suscriptor_id: item.suscriptor_id,
+        vigente: item.vigente ?? item.Vigente
+      }) as suscriptor)),
       catchError(()=>of([]))
     )
   }
 
   searchSuscriptorById(id:number):Observable<reporteSuscriptor[] | null>{
-    return this.http.get<reporteSuscriptor[]>(`${this.apiUrl}/reporte-suscriptor/${id}`)
+    return this.http.get<any[]>(`${this.apiUrl}/reporte-suscriptor/${id}`)
     .pipe(
+      map(items => items.map(item => ({
+        nombre: item.nombre,
+        correo: item.correo,
+        colonia: item.colonia ?? item.Colonia,
+        nombre_paquete: item.nombre_paquete,
+        servicios: item.servicios ?? item.Servicios,
+        descripcion: item.descripcion,
+        vigente: item.vigente ?? item.Vigente,
+        precio: item.precio,
+        conDescuento: item.conDescuento ?? item.ConDescuento
+      }) as reporteSuscriptor)),
       catchError(()=>of([]))
     )
   }
@@ -31,7 +50,7 @@ export class SuscriptoresService {
   searchByTerm(term: string) {
   const normalizedTerm = term.toLocaleLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-  return this.http.get<suscriptor[]>(`${this.apiUrl}/suscriptorInfo`).pipe(
+  return this.getSuscriptores().pipe(
     map(suscriptores =>
       suscriptores.filter(s => {
         const normalizedName = s.nombre.toLocaleLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
