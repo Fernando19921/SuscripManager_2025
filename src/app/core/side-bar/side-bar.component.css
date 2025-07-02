@@ -1,13 +1,13 @@
 .sidebar-container {
   width: 235px;
   height: 100vh;
-  background-color: #f8f9fa;
+  background-color: #f1f3f5; /* Gris claro más suave */
   padding: 20px;
   position: fixed;
   top: 0;
   left: 0;
   overflow-y: auto;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 0 6px rgba(0, 0, 0, 0.08);
 }
 
 .list-group {
@@ -18,19 +18,22 @@
   display: block;
   padding: 10px 15px;
   text-decoration: none;
-  color: #333;
+  color: #003366; /* Azul oscuro */
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   margin-bottom: 10px;
-  transition: background-color 0.3s, color 0.3s;
-  background-color: white; 
+  transition: background-color 0.3s ease, color 0.3s ease;
+  background-color: #ffffff;
+  font-weight: 500;
 }
 
 .list-group-item:hover {
-  background-color: #e9ecef;
+  background-color: #e6f0ff; /* Azul suave al pasar el mouse */
+  color: #0d6efd; /* Azul brillante */
 }
 
 .active {
-  background-color: #007bff !important;
-  color: white !important;
+  background-color: #0d6efd !important; /* Azul brillante */
+  color: #ffffff !important;
+  font-weight: 600;
 }

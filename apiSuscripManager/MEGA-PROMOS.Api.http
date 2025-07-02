@@ -1,0 +1,6 @@
+@MEGA_PROMOS.Api_HostAddress = http://localhost:5222
+
+GET {{MEGA_PROMOS.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

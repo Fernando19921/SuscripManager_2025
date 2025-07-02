@@ -1,55 +1,66 @@
 <div class="table-container position-relative">
 
-  <!-- Título y buscador en una sola fila -->
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <h4 class="mb-0">Lista de Suscriptores</h4>
+  <!-- Título y buscador -->
+  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+    <h4 class="mb-2 mb-md-0">Lista de Suscriptores</h4>
     <div style="min-width: 300px;">
       <core-search-input
-      class="w-100"
-      style="height: 48px;"
-      (onDebounce)="search($event)"
-      placeHolder="Buscar Suscriptor"
-      >
-    </core-search-input>
+        class="w-100"
+        style="height: 48px;"
+        (onDebounce)="search($event)"
+        placeHolder="Buscar Suscriptor">
+      </core-search-input>
     </div>
   </div>
 
-  <!-- Spinner centrado sobre la tabla mientras carga -->
-  <div *ngIf="isLoading" class="d-flex justify-content-center align-items-center position-absolute w-100 h-100" style="background-color: rgba(255,255,255,0.7); top: 0; left: 0; z-index: 10;">
+  <!-- Spinner de carga -->
+  <div *ngIf="isLoading"
+    class="d-flex justify-content-center align-items-center position-absolute w-100 h-100"
+    style="background-color: rgba(255,255,255,0.7); top: 0; left: 0; z-index: 10;">
     <core-loading-spinner></core-loading-spinner>
   </div>
 
-  <!-- Tabla visible solo cuando no está cargando -->
-  <table *ngIf="!isLoading" class="table table-bordered table-striped">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Nombre</th>
-        <th>Paquete Activo</th>
-        <th>Promocion Aplicada</th>
-        <th>Estado</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let user of usuarios; let i = index">
-        <td>{{ i + 1 }}</td>
-        <td>{{ user.nombre }}</td>
-        <td>{{ user.paquete }}</td>
-        <td>{{ user.promocion }}</td>
-        <td>
-          <span *ngIf="esPromocionVigente(user.vigente.toLocaleLowerCase())" class="badge bg-success">Promocion Vigente</span>
-          <span *ngIf="!esPromocionVigente(user.vigente.toLocaleLowerCase())" class="badge bg-danger">Promocion Expirada</span>
-          <ng-template #sinPromo>
-            <span class="badge bg-secondary">Sin Promoción Activa</span>
-          </ng-template>
-        </td>
-        <td>
-          <a class="btn btn-primary info-btn" [routerLink]="['/detalle', user.suscriptor_id]">
-            Info
-          </a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <!-- Tabla o mensaje de error -->
+  <ng-container *ngIf="!isLoading">
+
+    <!-- Mensaje cuando no hay resultados -->
+    <div *ngIf="usuarios.length === 0" class="text-center py-5 text-muted fs-5">
+      <i class="bi bi-search"></i> No se encontraron resultados con ese nombre.
+    </div>
+
+    <!-- Tabla de resultados -->
+    <table *ngIf="usuarios.length > 0" class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nombre</th>
+          <th>Paquete Activo</th>
+          <th>Promoción Aplicada</th>
+          <th>Estado</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of usuarios; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ user.nombre }}</td>
+          <td>{{ user.paquete }}</td>
+          <td>{{ user.promocion }}</td>
+          <td>
+            <span *ngIf="esPromocionVigente(user.vigente.toLocaleLowerCase())" class="badge bg-success">
+              ✅ Vigente
+            </span>
+            <span *ngIf="!esPromocionVigente(user.vigente.toLocaleLowerCase())" class="badge bg-danger">
+              ❌ Expirada
+            </span>
+          </td>
+          <td>
+            <a class="btn btn-primary info-btn" [routerLink]="['/detalle', user.suscriptor_id]">
+              Info
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-container>
 </div>

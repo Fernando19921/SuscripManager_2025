@@ -1,6 +1,0 @@
-@apiSuscripManager_HostAddress = http://localhost:5191
-
-GET {{apiSuscripManager_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

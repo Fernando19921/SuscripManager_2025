@@ -1,44 +1,76 @@
 .table-container {
-  width: 100%;
-  padding: 1rem;
-  overflow-x: auto; /* Habilita scroll horizontal si es necesario */
-  box-sizing: border-box;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  min-width: 600px; /* Previene que las columnas se aplasten en pantallas pequeñas */
+/* Tabla moderna */
+table {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  background-color: white;
 }
 
-.table th,
-.table td {
-  padding: 0.75rem;
-  text-align: left;
-  border: 1px solid #ddd;
-  white-space: nowrap; /* Evita que el contenido se rompa en varias líneas */
+/* Encabezado de la tabla */
+table thead th {
+  background-color: #003366;
+  color: white;
+  text-align: center;
 }
 
-.table th {
-  background-color: #f8f8f8;
-  font-weight: bold;
+/* Celdas */
+table tbody td {
+  vertical-align: middle;
+  text-align: center;
 }
 
-@media (max-width: 600px) {
-  .table {
-    min-width: 100%;
-  }
+/* Badges */
+.badge {
+  border-radius: 50px;
+  font-size: 0.85rem;
+  padding: 0.35rem 0.8rem;
+  font-weight: 500;
+}
 
+/* Botón Info */
+.info-btn {
+  border-radius: 25px;
+  padding: 0.3rem 1rem;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.info-btn:hover {
+  background-color: #0056d2;
+}
+
+/* Estilo de core-search-input */
+core-search-input {
+  border-radius: 25px !important;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
   .table-container {
-    padding: 0.5rem;
+    padding: 1rem;
+  }
+
+  .info-btn {
+    font-size: 0.85rem;
+    padding: 0.3rem 0.8rem;
+  }
+
+  .badge {
+    font-size: 0.75rem;
+  }
+
+  table thead th,
+  table tbody td {
+    font-size: 0.85rem;
   }
 }
-
-.custom-search {
-  height: 48px;
-  min-width: 300px;
-  width: 100%;
-}
-
-
-
