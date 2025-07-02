@@ -1,8 +1,8 @@
 <div class="table-container position-relative">
 
   <!-- Título y buscador -->
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <h4 class="mb-0">Lista de Suscriptores</h4>
+  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+    <h4 class="mb-2 mb-md-0">Lista de Suscriptores</h4>
     <div style="min-width: 300px;">
       <core-search-input
         class="w-100"
@@ -47,8 +47,12 @@
           <td>{{ user.paquete }}</td>
           <td>{{ user.promocion }}</td>
           <td>
-            <span *ngIf="esPromocionVigente(user.vigente.toLocaleLowerCase())" class="badge bg-success">Promoción Vigente</span>
-            <span *ngIf="!esPromocionVigente(user.vigente.toLocaleLowerCase())" class="badge bg-danger">Promoción Expirada</span>
+            <span *ngIf="esPromocionVigente(user.vigente.toLocaleLowerCase())" class="badge bg-success">
+              ✅ Vigente
+            </span>
+            <span *ngIf="!esPromocionVigente(user.vigente.toLocaleLowerCase())" class="badge bg-danger">
+              ❌ Expirada
+            </span>
           </td>
           <td>
             <a class="btn btn-primary info-btn" [routerLink]="['/detalle', user.suscriptor_id]">

@@ -1,0 +1,20 @@
+.app-header {
+  background-color: #003366;
+  color: white;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+.logo {
+  height: 100px; /* puedes subirlo hasta 120 si es necesario */
+  width: auto;
+  object-fit: contain;
+}
+
