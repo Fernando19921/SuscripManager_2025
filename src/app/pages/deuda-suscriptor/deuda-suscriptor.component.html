@@ -10,14 +10,14 @@
         <mat-label>Selecciona Suscriptor</mat-label>
         <mat-select [(ngModel)]="selectedSubscriberId" (ngModelChange)="onSelectSubscriber()">
           <mat-option disabled>Selecciona</mat-option>
-          <mat-option *ngFor="let sub of subscribers" [value]="+sub.suscriptor_id">
+          <mat-option *ngFor="let sub of subscribers" [value]="sub.suscriptor_id">
             {{ sub.nombre }}
           </mat-option>
         </mat-select>
       </mat-form-field>
 
       <!-- Selector de paquete -->
-      <mat-form-field *ngIf="debtPackages.length > 0" appearance="fill" class="form-field">
+      <mat-form-field *ngIf="debtPackages.length" appearance="fill" class="form-field">
         <mat-label>Selecciona Paquete</mat-label>
         <mat-select [(ngModel)]="selectedPackageIndex" (ngModelChange)="onSelectPackage()">
           <mat-option disabled>Selecciona</mat-option>
@@ -35,7 +35,7 @@
       <p><strong>Colonia:</strong> {{ selectedDebt.colonia }}</p>
       <p><strong>Paquete:</strong> {{ selectedDebt.paquete }}</p>
       <p><strong>Promoción:</strong> {{ selectedDebt.promocion }}</p>
-      <p><strong>Precio base:</strong> {{ selectedDebt.mensualidades[0].precioSinDescuento | currency:'MXN' }}</p>
+      <p><strong>Precio base:</strong>{{ selectedDebt.mensualidades[0].precioSinDescuento | currency:'MXN' }}</p>
 
       <h4>Servicios incluidos</h4>
       <ul class="service-list">
@@ -46,13 +46,13 @@
     </div>
 
     <!-- Ahorro -->
-    <div *ngIf="calculatedTotal !== null" class="savings-section">
+    <div *ngIf="calculatedTotal !== null && discountPercentage > 0" class="savings-section">
       <mat-progress-bar mode="determinate" [value]="discountPercentage"></mat-progress-bar>
       <p>{{ discountPercentage }}% de ahorro aplicado</p>
     </div>
 
-    <!-- Total -->
-    <div *ngIf="selectedDebt">
+    <!-- Total a pagar -->
+    <div *ngIf="calculatedTotal !== null">
       <h3>Total a pagar</h3>
       <p>{{ calculatedTotal | currency:'MXN' }}</p>
     </div>
@@ -68,8 +68,7 @@
         </mat-card-content>
       </mat-card>
 
-      <!-- Mostrar "A partir de..." solo si hay promoción -->
-      <mat-card *ngIf="promotionMonths > 0 && discountPercentage > 0" class="payment-card">
+      <mat-card *ngIf="postPromotionPayment !== null" class="payment-card">
         <mat-card-header>
           <mat-card-title>A partir de {{ nextMonthName }}</mat-card-title>
         </mat-card-header>
@@ -80,12 +79,8 @@
     </div>
   </mat-card-content>
 
-  <mat-card-actions>
-    <button mat-stroked-button (click)="calculateTotal()" [disabled]="calculatedTotal !== null">
-      Calcular
-    </button>
-    <button mat-flat-button color="primary" (click)="exportToPDF()" [disabled]="calculatedTotal === null">
-      Exportar PDF
-    </button>
+  <mat-card-actions class="actions">
+    <button mat-stroked-button (click)="calculateTotal()">Calcular</button>
+    <button mat-flat-button color="primary" (click)="exportToPDF()">Exportar PDF</button>
   </mat-card-actions>
 </mat-card>

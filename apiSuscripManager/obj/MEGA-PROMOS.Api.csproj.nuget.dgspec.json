@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\xampp\\htdocs\\SuscripManager\\apiSuscripManager\\MEGA-PROMOS.Api.csproj": {}
+    "C:\\Users\\Jalil Mendoza\\Desktop\\MegaPrecios\\SuscripManager_2025\\apiSuscripManager\\MEGA-PROMOS.Api.csproj": {}
   },
   "projects": {
-    "C:\\xampp\\htdocs\\SuscripManager\\apiSuscripManager\\MEGA-PROMOS.Api.csproj": {
+    "C:\\Users\\Jalil Mendoza\\Desktop\\MegaPrecios\\SuscripManager_2025\\apiSuscripManager\\MEGA-PROMOS.Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\xampp\\htdocs\\SuscripManager\\apiSuscripManager\\MEGA-PROMOS.Api.csproj",
+        "projectUniqueName": "C:\\Users\\Jalil Mendoza\\Desktop\\MegaPrecios\\SuscripManager_2025\\apiSuscripManager\\MEGA-PROMOS.Api.csproj",
         "projectName": "MEGA-PROMOS.Api",
-        "projectPath": "C:\\xampp\\htdocs\\SuscripManager\\apiSuscripManager\\MEGA-PROMOS.Api.csproj",
-        "packagesPath": "C:\\Users\\Fernando\\.nuget\\packages\\",
-        "outputPath": "C:\\xampp\\htdocs\\SuscripManager\\apiSuscripManager\\obj\\",
+        "projectPath": "C:\\Users\\Jalil Mendoza\\Desktop\\MegaPrecios\\SuscripManager_2025\\apiSuscripManager\\MEGA-PROMOS.Api.csproj",
+        "packagesPath": "C:\\Users\\Jalil Mendoza\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Jalil Mendoza\\Desktop\\MegaPrecios\\SuscripManager_2025\\apiSuscripManager\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Fernando\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Jalil Mendoza\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -86,7 +86,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.301/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
