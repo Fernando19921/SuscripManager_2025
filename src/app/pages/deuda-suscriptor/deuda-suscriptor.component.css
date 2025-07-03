@@ -17,11 +17,35 @@
 
 .package-details {
   margin-bottom: 24px;
+  animation: fadeIn 300ms ease-out;
+
+  h3 {
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+
+  p {
+    margin: 4px 0;
+    color: rgba(0, 0, 0, 0.54);
+  }
+
+  h4 {
+    margin-top: 16px;
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
 }
 
 .package-details h4 {
   margin-top: 16px;
   margin-bottom: 8px;
+}
+
+.mat-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
 }
 
 .no-promos {
@@ -30,14 +54,33 @@
   margin-left: 8px;
 }
 
+.promo-list {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .promo-item button {
   pointer-events: none; /* Las disponibles no son clicables */
 }
 
 .savings-section {
-  margin-bottom: 24px;
+  margin-bottom: 24px; /* Replace $gap * 1.5 with a fixed value */
 }
 
+.savings-section mat-progress-bar {
+  height: 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.savings-section p {
+  font-size: 0.9rem;
+  color: rgba(0, 0, 0, 0.54);
+}
 .save-text {
   text-align: right;
   font-size: 0.9rem;
@@ -77,4 +120,28 @@
   justify-content: initial;
   gap: 16px;
   margin-top: 16px;
+}
+
+.service-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 8px 0 16px;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: inline-block;
+    padding: 6px 14px;
+    border: 1px solid #19191a;
+    border-radius: 16px;
+    background: #f8f8f8;
+    color: #19191a;
+    font-size: 0.875rem;
+    cursor: default;
+    transition: 
+      background 0.2s ease, 
+      color 0.2s ease, 
+      box-shadow 0.2s ease;
+  }
 }
