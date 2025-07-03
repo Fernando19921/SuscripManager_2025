@@ -1,0 +1,24 @@
+/* Espaciado general */
+:host {
+  display: block;
+  padding: 24px;
+}
+
+/* Botón de crear promoción */
+button {
+  margin-bottom: 16px;
+}
+
+/* Tabla */
+table {
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+/* Contenedor del formulario (si deseas encapsularlo visualmente) */
+form {
+  background-color: #fafafa;
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}

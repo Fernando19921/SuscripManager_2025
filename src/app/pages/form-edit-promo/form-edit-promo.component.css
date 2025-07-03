@@ -1,0 +1,89 @@
+.form-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 32px;
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", sans-serif;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 24px;
+  font-size: 28px;
+  font-weight: bold;
+  color: #222;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.date-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.date-row mat-form-field {
+  flex: 1;
+  min-width: 240px;
+}
+
+.estado-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0 32px;
+  padding: 0 8px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+
+.estado-label {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.estado-label.activa {
+  color: green;
+}
+
+.estado-label.inactiva {
+  color: red;
+}
+
+.button-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+button[mat-raised-button],
+button[mat-stroked-button] {
+  min-width: 100px;
+  font-weight: 500;
+}
+
+@media (max-width: 480px) {
+  .form-container {
+    padding: 20px;
+  }
+
+  h2 {
+    font-size: 22px;
+  }
+
+  .date-row {
+    flex-direction: column;
+  }
+
+  .button-row {
+    justify-content: center;
+  }
+}
