@@ -142,33 +142,39 @@ Las rutas están definidas en `app.routes.ts` usando `RouterModule`.
 ---
 
 
+
 # 📄 Documentación del Backend – SuscripManager_2025
 
 ## 📚 Índice
+1. 🧩 Descripción General
+2. ⚙️ Tecnologías Usadas
+3. 📁 Estructura del Proyecto Backend
+4. 🧱 Modelos de Datos
+5. 🧠 DbContext
+6. 📡 Endpoints Disponibles
+7. 📑 Swagger (Documentación Interactiva)
+8. 🏁 Ejecución del Proyecto
+9. 📌 Notas Finales
 
-- [1. Descripción General](#1-🧩-descripción-general)
-- [2. Tecnologías Usadas](#2-⚙️-tecnologías-usadas)
-- [3. Estructura del Proyecto Backend](#3-📁-estructura-del-proyecto-backend)
-- [4. Modelos de Datos](#4-🧱-modelos-de-datos)
-- [5. DbContext](#5-🧠-dbcontext)
-- [6. Endpoints Disponibles](#6-📡-endpoints-disponibles)
-- [7. Swagger (Documentación Interactiva)](#7-📑-swagger-documentación-interactiva)
-- [8. Ejecución del Proyecto](#8-🏁-ejecución-del-proyecto)
-- [9. Notas Finales](#9-📌-notas-finales)
-
+---
 
 ## 1. 🧩 Descripción General
-El backend de **SuscripManager_2025** está desarrollado en **ASP.NET Core**, utilizando una arquitectura modular basada en controladores y modelos. Expone una API REST para gestionar promociones, paquetes, servicios, suscriptores y sus relaciones. Se emplea **Entity Framework Core** como ORM para persistencia en una base de datos SQL Server.
+
+El backend de **SuscripManager_2025** está desarrollado en **ASP.NET Core**, utilizando una arquitectura modular basada en controladores (`Controllers`) y modelos (`Models`). Expone una **API RESTful** que permite gestionar promociones, paquetes, suscriptores, mensualidades y sus relaciones. Se utiliza **Entity Framework Core** como ORM para conectar con una base de datos SQL Server.
+
+---
 
 ## 2. ⚙️ Tecnologías Usadas
 
-| Tecnología              | Versión / Descripción             |
-|------------------------|-----------------------------------|
-| ASP.NET Core Web API   | .NET 6 o superior                 |
-| Entity Framework Core  | ORM para manejo de datos         |
-| SQL Server             | Motor de base de datos relacional |
-| C#                     | Lenguaje de programación          |
-| Swagger                | Documentación y pruebas de la API (opcional) |
+| Tecnología               | Descripción                         |
+|--------------------------|-------------------------------------|
+| ASP.NET Core Web API     | Framework para construir la API     |
+| Entity Framework Core    | ORM para manejo de datos relacional |
+| SQL Server               | Base de datos relacional            |
+| C#                       | Lenguaje de programación backend    |
+| Swagger                  | Documentación y prueba interactiva  |
+
+---
 
 ## 3. 📁 Estructura del Proyecto Backend
 
@@ -177,47 +183,54 @@ apiSuscripManager/
 ├── Controllers/
 │   ├── PromocionesDatasController.cs
 │   ├── PaquetesDatasController.cs
-│   ├── ServiciosDatasController.cs
-│   └── ...otros controladores
-├── PromocionesModel/
+│   ├── SuscriptoresDatasController.cs
+│   ├── DeudaController.cs
+│   └── ServiciosDatasController.cs
+├── Models/
 │   ├── PromocionesData.cs
-│   └── PromocionesDbContext.cs
+│   ├── PaqXPromoData.cs
+│   ├── SuscXPaqData.cs
+│   ├── MensualidadData.cs
+├── PromocionesDbContext.cs
 ├── Program.cs
+├── appsettings.json
 └── MEGA-PROMOS.Api.csproj
 ```
 
+---
+
 ## 4. 🧱 Modelos de Datos
 
-### `PromocionesData.cs`
+Ejemplo de entidad principal:
 
 ```csharp
-public class PromocionesData
-{
+public class PromocionesData {
     [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int promocion_id { get; set; }
     public string? nombre { get; set; }
     public string? descripcion { get; set; }
     public decimal descuento { get; set; }
-    public string? tipo_descuento { get; set; } // porcentaje o monto fijo
+    public string? tipo_descuento { get; set; }
     public DateTime fecha_inicio { get; set; }
     public DateTime fecha_fin { get; set; }
     public bool es_automatica { get; set; }
 }
 ```
 
+También se incluyen entidades de relaciones como `SuscXPaqData`, `PaqXPromoData`, y `MensualidadData`.
+
+---
+
 ## 5. 🧠 DbContext
 
-### `PromocionesDbContext.cs`
-
 ```csharp
-public class PromocionesDbContext : DbContext
-{
+public class PromocionesDbContext : DbContext {
     public DbSet<PromocionesData> promociones { get; set; }
     public DbSet<SuscXPaqData> suscriptores_x_paquete { get; set; }
     public DbSet<PaqXPromoData> paquete_x_promocion { get; set; }
+    public DbSet<MensualidadData> mensualidades { get; set; }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
+    protected override void OnModelCreating(ModelBuilder modelBuilder) {
         modelBuilder.Entity<PaqXPromoData>()
             .HasKey(p => new { p.paquete_id, p.promocion_id });
 
@@ -227,21 +240,34 @@ public class PromocionesDbContext : DbContext
 }
 ```
 
+---
+
 ## 6. 📡 Endpoints Disponibles
 
-### 📂 `PromocionesDatasController`
+### 📂 PromocionesDatasController
+| Método | Ruta                         | Función                  |
+|--------|------------------------------|--------------------------|
+| GET    | /api/promociones             | Obtener todas            |
+| GET    | /api/promociones/{id}        | Obtener por ID           |
+| POST   | /api/promociones             | Crear nueva              |
+| PUT    | /api/promociones/{id}        | Actualizar               |
+| DELETE | /api/promociones/{id}        | Eliminar                 |
 
-| Método | Ruta                 | Función                   | Descripción                             |
-|--------|----------------------|---------------------------|-----------------------------------------|
-| GET    | `/api/promociones`   | `Getpromociones`          | Obtiene todas las promociones           |
-| GET    | `/api/promociones/{id}` | `GetPromocionesData`   | Obtiene una promoción por ID            |
-| POST   | `/api/promociones`   | `PostPromocionesData`     | Crea una nueva promoción                |
-| PUT    | `/api/promociones/{id}` | `PutPromocionesData`   | Actualiza una promoción existente       |
-| DELETE | `/api/promociones/{id}` | `DeletePromocionesData`| Elimina una promoción por ID            |
+### 📂 SuscriptoresDatasController
+| Método | Ruta                  | Función                      |
+|--------|-----------------------|------------------------------|
+| GET    | /api/suscriptores     | Obtener lista de usuarios    |
+
+### 📂 DeudaController
+| Método | Ruta             | Función                       |
+|--------|------------------|-------------------------------|
+| GET    | /api/deuda/{id}  | Calcular deuda por ID         |
+
+(Otros controladores como Paquetes y Servicios siguen el mismo patrón)
+
+---
 
 ## 7. 📑 Swagger (Documentación Interactiva)
-
-Puedes habilitar Swagger para probar los endpoints de forma visual:
 
 ### Instalación
 
@@ -249,11 +275,10 @@ Puedes habilitar Swagger para probar los endpoints de forma visual:
 dotnet add package Swashbuckle.AspNetCore
 ```
 
-### Configuración en `Program.cs`
+### Configuración en Program.cs
 
 ```csharp
 builder.Services.AddSwaggerGen();
-
 app.UseSwagger();
 app.UseSwaggerUI();
 ```
@@ -264,28 +289,28 @@ app.UseSwaggerUI();
 http://localhost:<puerto>/swagger
 ```
 
+---
+
 ## 8. 🏁 Ejecución del Proyecto
 
 ### Requisitos
 
 - .NET SDK 6.0 o superior
-- SQL Server (local o contenedor Docker)
-- Visual Studio o Visual Studio Code
-- Conexión válida en `appsettings.json`
+- SQL Server (local o Docker)
+- Visual Studio o VS Code
+- Configurar la cadena de conexión en `appsettings.json`
 
-### Ejecución
+### Comandos
 
 ```bash
 dotnet build
 dotnet run
 ```
 
+---
+
 ## 9. 📌 Notas Finales
 
-- La API sigue el estilo RESTful.
-- El diseño es modular, facilitando escalabilidad y mantenibilidad.
-- Las relaciones entre promociones, paquetes y suscriptores están definidas mediante claves compuestas.
-
-
-📍 Para dudas, sugerencias o colaboración técnica, contacta al equipo de desarrollo o revisa el repositorio completo.
-
+- La API cumple con el estándar RESTful.
+- El diseño modular permite alta escalabilidad.
+- Las relaciones entre suscriptores, paquetes y promociones están bien normalizadas con claves compuestas.
