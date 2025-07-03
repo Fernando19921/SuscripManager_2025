@@ -1,20 +1,51 @@
+:host {
+  display: block;
+  margin-bottom: 0;
+}
+
+/* Estilo principal del header */
 .app-header {
   background-color: #003366;
   color: white;
-  padding: 1rem 2rem;
+  padding: 0.5rem 0;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  margin: 0;
 }
 
+/* Contenido interno centrado y limitado */
 .header-content {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 1.5rem;
 }
 
+/* Logo */
+.logo-section {
+  display: flex;
+  align-items: center;
+}
 
 .logo {
-  height: 100px; /* puedes subirlo hasta 120 si es necesario */
+  height: 80px;
   width: auto;
   object-fit: contain;
 }
 
+/* Título */
+h1 {
+  flex: 1;
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+/* Espaciador para balance visual */
+.spacer {
+  width: 60px; /* igual al logo para centrar el h1 */
+}

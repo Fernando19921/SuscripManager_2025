@@ -1,0 +1,67 @@
+<form class="form-container" #formPromocion="ngForm" (ngSubmit)="guardar()" novalidate>
+
+  <h2>{{esEdicion ? 'Editar Promoción' : 'Nueva Promoción'}}</h2>
+
+  <!-- Nombre -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Nombre de la promoción</mat-label>
+    <input matInput [(ngModel)]="promocion.nombre" name="nombre" required #nombreCtrl="ngModel">
+    <mat-error *ngIf="nombreCtrl.invalid && nombreCtrl.touched">El nombre es obligatorio</mat-error>
+  </mat-form-field>
+
+  <!-- Descripción -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Descripción</mat-label>
+    <textarea matInput [(ngModel)]="promocion.descripcion" name="descripcion" required rows="3" #descCtrl="ngModel"></textarea>
+    <mat-error *ngIf="descCtrl.invalid && descCtrl.touched">La descripción es obligatoria</mat-error>
+  </mat-form-field>
+
+  <!-- Fechas -->
+  <div class="date-row">
+    <mat-form-field appearance="outline">
+      <mat-label>Fecha de inicio</mat-label>
+      <input matInput [matDatepicker]="inicioPicker" [(ngModel)]="promocion.fecha_inicio" name="fechaInicio" required #inicioCtrl="ngModel">
+      <mat-datepicker-toggle matSuffix [for]="inicioPicker"></mat-datepicker-toggle>
+      <mat-datepicker #inicioPicker></mat-datepicker>
+      <mat-error *ngIf="inicioCtrl.invalid && inicioCtrl.touched">Requerida</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Fecha de fin</mat-label>
+      <input matInput [matDatepicker]="finPicker" [(ngModel)]="promocion.fecha_fin" name="fechaFin" required #finCtrl="ngModel">
+      <mat-datepicker-toggle matSuffix [for]="finPicker"></mat-datepicker-toggle>
+      <mat-datepicker #finPicker></mat-datepicker>
+      <mat-error *ngIf="finCtrl.invalid && finCtrl.touched">Requerida</mat-error>
+    </mat-form-field>
+  </div>
+
+  <!-- Tipo de descuento -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Tipo de descuento</mat-label>
+    <mat-select [(ngModel)]="promocion.tipoDescuento" name="tipoDescuento" required #tipoDescCtrl="ngModel">
+      <mat-option value="porcentaje">Porcentaje</mat-option>
+      <mat-option value="cantidadFija">Cantidad fija</mat-option>
+    </mat-select>
+    <mat-error *ngIf="tipoDescCtrl.invalid && tipoDescCtrl.touched">Selecciona una opción</mat-error>
+  </mat-form-field>
+
+  <!-- Estado -->
+  <div class="estado-row">
+    <label for="estadoToggle">Estado:</label>
+    <mat-slide-toggle
+      id="estadoToggle"
+      [(ngModel)]="promocion.estado"
+      name="estado"
+      color="primary">
+    </mat-slide-toggle>
+    <span class="estado-label" [ngClass]="promocion.estado ? 'activa' : 'inactiva'">
+      {{ promocion.estado ? 'Activada' : 'Desactivada' }}
+    </span>
+  </div>
+
+  <!-- Botones -->
+  <div class="button-row">
+    <button mat-raised-button color="primary" type="submit" [disabled]="formPromocion.invalid">Guardar</button>
+    <button mat-stroked-button color="warn" type="button" (click)="cancelar()">Cancelar</button>
+  </div>
+</form>

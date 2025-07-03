@@ -1,24 +1,35 @@
-.main-container {
-  padding: 20px 0 0 20px !important;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
+.layout {
+  display: flex;
   min-height: 100vh;
-  background-color: #f8f9fa;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
 }
 
+.shared-side-bar {
+  width: 220px;
+  flex-shrink: 0;
+}
+
+/* Contenedor del contenido a la derecha del sidebar */
 .main-content {
-  margin-left: 220px; /* igual al ancho del sidebar */
-  padding: 20px;
+  flex: 1;
+  margin-left: 220px; /* Igual al ancho del sidebar */
+  padding: 0;          /* ¡QUITAMOS ESPACIOS! */
+  background-color: #f8f9fa;
 }
 
+/* Contenedor principal de vista (header + contenido + footer) */
 .main-container {
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
+  padding: 0 20px 20px;  /* Solo padding lateral y abajo */
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
 }
 
+/* Footer se va hasta abajo */
 app-footer {
   margin-top: auto;
 }
+
